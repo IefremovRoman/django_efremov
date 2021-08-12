@@ -14,8 +14,8 @@ class Student(models.Model):
 
 
 class Group(models.Model):
-    student_id = models.CharField(max_length=24)
-    teacher_id = models.CharField(max_length=24)
+    student_id = models.IntegerField()
+    teacher_id = models.IntegerField()
 
     def __str__(self):
         return f'{self.id} {self.student_id} {self.teacher_id}'

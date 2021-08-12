@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'students.middleware.simple_middleware',
+    # 'students.middleware.simple_middleware',
 ]
 
 ROOT_URLCONF = 'django_efremov.urls'
