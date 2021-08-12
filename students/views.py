@@ -172,11 +172,11 @@ def generate_students(request):
 
 
 # def create_student(request, student_id):
-#     if request.method = 'POST':
-#         form = StudentFormFromModel(request.POST)
-#         if form.is_valid():
-#             Student.object.update_or_create(defaults=form.cleaned_data, id=student_id)
-#             return HttpResponseRedirect(reverse('list_students'))
+#    if request.method = 'POST':
+#       form = StudentFormFromModel(request.POST)
+#       if form.is_valid():
+#          Student.object.update_or_create(defaults=form.cleaned_data, id=student_id)
+#          return HttpResponseRedirect(reverse('list_students'))
 
 
 def groups(request):
