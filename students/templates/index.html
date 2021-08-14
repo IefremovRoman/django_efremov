@@ -1,0 +1,38 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static '/students/style.css' %}" />
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Главная страница</title>
+</head>
+<body>
+	<br><h1 style="font-size: 40px">Hello, world!</h1>
+	<br><h2>Map of my site:</h2>
+	<br><a href="admin/" title="Admin tools">Admin site</a>
+	<br><a href="students/" title="This link shows all students">Student list</a>
+	<br><a href="create_student" title="This link allows to create a student">Create student</a>
+	<br><a href="groups/" title="This link shows all groups">Group list</a>
+	<br><a href="create_group" title="This link allows to create a group">Create group</a>
+	<br><a href="teachers/" title="This link shows all teachers">Teacher list</a>
+	<br><a href="create_teacher" title="This link allows to create a teacher">Create teacher</a>
+	<br><a href="generate-student/" title="By this link it generates 1 new random student">Add 1 student</a>
+	<br><a href="generate-students/" title="By this link you can give to a 'count' parameter some 0 to 100 number and it generates new students, 100 by default">Generate n students</a>
+</body>
+</html>
+
+<style>
+	a {
+		text-decoration: none;
+		font-family: Gill Sans, sans-serif;
+		font-size: 25px;
+	}
+
+	a:hover {
+		text-decoration: underline;
+    	font-size: 40px;
+	}
+</style>
