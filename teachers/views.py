@@ -4,8 +4,8 @@ from django import forms
 
 from faker import Faker
 
-from .models import Student
-from .forms import StudentForm
+from .models import Teacher
+from .forms import TeacherForm
 
 # Help funcitons
 locale = 'uk_UA'
@@ -17,48 +17,65 @@ def model_pretty_viewer(query):
     # return '<br/>'.join(map(str, query)) 
 
 # Viewers
-def students(request):
-    student_list = Student.objects.all()
-    output = model_pretty_viewer(student_list)
-    return HttpResponse(output)
+def teachers(request):
+    if request.method == 'GET':
 
+        query = Teacher.objects.all()
+        first_name = request.GET.get('first_name', '')
+        if first_name:
+            query = query.filter(first_name=first_name)
 
-def create_student(request):
+        last_name = request.GET.get('last_name', '')
+        if last_name:
+            query = query.filter(last_name=last_name)
+
+        age = request.GET.get('age', '')
+        if age:
+            query = query.filter(age=age)
+
+        subject = request.GET.get('subject', '')
+        if subject:
+            query = query.filter(subject=subject)
+
+        output = model_pretty_viewer(query)
+        return HttpResponse(output)
+    return HttpResponse('Method not found')
+
+def create_teacher(request):
     
     if request.method == 'POST':
-        form = StudentForm(request.POST)
+        form = TeacherForm(request.POST)
         if form.is_valid():
-            if Student.objects.filter(**form.cleaned_data).exists():
+            if Teacher.objects.filter(**form.cleaned_data).exists():
                 # raise forms.ValidationError('This data is doubling!')
                 operation_status = {
                     'text': 'This data is doubling!',
-                    'app_link_text': 'Student',
-                    'app_list': 'students/'
+                    'app_link_text': 'Teacher',
+                    'app_list': 'teachers/'
                     }
                 return render(request, 'operation_status.html', operation_status)
                 
             else:
-                Student.objects.create(**form.cleaned_data)
+                Teacher.objects.create(**form.cleaned_data)
                 operation_status = {
-                    'text': 'Student created successfully!',
-                    'app_link_text': 'Student',
-                    'app_list': 'students/'
+                    'text': 'Teacher created successfully!',
+                    'app_link_text': 'Teacher',
+                    'app_list': 'teachers/'
                     }
                 return render(request, 'operation_status.html', operation_status)
 
     elif request.method == 'GET':
-        form = StudentForm()
+        form = TeacherForm()
     return render(
                     request,
                     'creation_form.html',
                     {
                         'form': form,
-                        'header':'Student creation form',
-                        'action':'/create_student',
-                        'app_link_text': 'Student',
-                        'app_list': 'students/'
+                        'header':'Teacher creation form',
+                        'action':'/create_teacher',
+                        'app_link_text': 'Teacher',
+                        'app_list': 'teachers/'
                     })
-
 
 
 def generate_student(request):
@@ -102,3 +119,9 @@ def generate_students(request):
 #       if form.is_valid():
 #          Student.object.update_or_create(defaults=form.cleaned_data, id=student_id)
 #          return HttpResponseRedirect(reverse('list_students'))
+
+
+
+
+
+

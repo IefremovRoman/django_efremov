@@ -19,16 +19,7 @@ from django.urls import include, path
 
 from .views import *
 
-
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', index),
-    path('', include('groups.urls')),
-    path('', include('students.urls')),
-    path('', include('teachers.urls'))
+    path('teachers/', teachers),
+    path('create_teacher', create_teacher),
 ]
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)), ] + urlpatterns

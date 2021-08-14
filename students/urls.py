@@ -19,16 +19,9 @@ from django.urls import include, path
 
 from .views import *
 
-
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', index),
-    path('', include('groups.urls')),
-    path('', include('students.urls')),
-    path('', include('teachers.urls'))
+    path('students/', students),
+    path('create_student', create_student),
+    path('generate-student/', generate_student),
+    path('generate-students/', generate_students)
 ]
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)), ] + urlpatterns
