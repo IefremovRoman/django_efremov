@@ -1,11 +1,15 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django import forms
+from django.views.generic import ListView
+from django.contrib import messages
 
 from faker import Faker
 
 from .models import Student
 from .forms import StudentForm
+
+# from django_efremov.views import list_view_factory
 
 # Help funcitons
 locale = 'uk_UA'
@@ -16,11 +20,16 @@ def model_pretty_viewer(query):
     return '<br/>'.join(str(q) for q in query)
     # return '<br/>'.join(map(str, query)) 
 
+# students = list_view_factory(Student)
+
 # Viewers
 def students(request):
     student_list = Student.objects.all()
     output = model_pretty_viewer(student_list)
     return HttpResponse(output)
+# class StudentListView(ListView):
+#     model = Student
+#     template_name  = "list_view.html"
 
 
 def create_student(request):
@@ -30,12 +39,14 @@ def create_student(request):
         if form.is_valid():
             if Student.objects.filter(**form.cleaned_data).exists():
                 # raise forms.ValidationError('This data is doubling!')
-                operation_status = {
-                    'text': 'This data is doubling!',
-                    'app_link_text': 'Student',
-                    'app_list': 'students/'
-                    }
-                return render(request, 'operation_status.html', operation_status)
+                # operation_status = {
+                #     'text': 'This data is doubling!',
+                #     'app_link_text': 'Student',
+                #     'app_list': 'students/'
+                #     }
+                messages.error(request, 'This data is doubling!')
+                # return render(request, 'operation_status.html', operation_status)
+                return redirect('create-student')
                 
             else:
                 Student.objects.create(**form.cleaned_data)

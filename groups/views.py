@@ -5,7 +5,7 @@ from django import forms
 from faker import Faker
 
 from .models import Group
-from .forms import GroupForm
+# from .forms import GroupForm
 
 # Help funcitons
 locale = 'uk_UA'
@@ -24,7 +24,7 @@ def groups(request):
 
 
 def create_group(request):
-    
+
     if request.method == 'POST':
         form = GroupForm(request.POST)
         if form.is_valid():

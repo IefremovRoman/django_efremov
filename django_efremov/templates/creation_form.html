@@ -88,7 +88,7 @@
 
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static '/students/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static '/style.css' %}" />
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -112,6 +112,11 @@
     {% endfor %}
     </div>
     
+    {% if messages %}
+      {% for message in messages %}
+        <h2 class="errorMsg">{{ message }}</h2>
+      {% endfor %}
+    {% endif %}
     
     <input class="text" type="submit" value="Submit">
   </form>
@@ -140,6 +145,10 @@
   .field_item {
     padding: 0px;
     margin: 0px;
+  }
+
+  h2.errorMsg {
+    color: red;
   }
 </style>
 
