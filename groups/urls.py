@@ -20,6 +20,9 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('groups/', groups),
-    path('create_group', create_group)
+    path('groups/', list_groups, name='list-groups'),
+    path('group/<int:group_id>', get_group, name='get-group'),
+    path('create_group', create_group, name='create-group'),
+    path('edit_group/<int:group_id>', edit_group, name='edit-group'),
+    path('delete_group/<int:group_id>', delete_group, name='delete-group')
 ]

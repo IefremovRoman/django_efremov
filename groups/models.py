@@ -1,11 +1,18 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 # ["title", "start_year", "finish_year", "student_quantity"]
 class Group(models.Model):
     title = models.CharField(max_length=8, default='')
-    start_year = models.DateField(null=True)
-    finish_year = models.DateField(null=True)
+    start_year = models.IntegerField(   
+                                    validators=[MinValueValidator(1984),
+                                                MaxValueValidator(2021)],
+                                    null=True)
+    finish_year = models.IntegerField(   
+                                    validators=[MinValueValidator(1984),
+                                                MaxValueValidator(2021)],
+                                    null=True)
     student_quantity = models.IntegerField(default=1)
 
     def __str__(self):

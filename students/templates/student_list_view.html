@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Students</h2>
+<table >
+	<tr>
+	    {% for field in fields %}
+	        <th>{{ field.name.title }}</th>
+	    {% endfor %}
+	    <th>Edit action</th>
+	    <th>Delete action</th>
+	</tr>
+	{% for student in students %}
+	<tr>
+		{% for k,v in student.items %}
+			{% if k != '_state' %}
+	        	<td>{{ v }}</td>
+	        {% endif %}
+	    {% endfor %}
+		<td>
+			<a href="{% url 'edit-student' student.id %}">Edit</a>
+		</td>
+	    <td>
+	    	<a href="{% url 'delete-student' student.id %}">Delete</a>
+	    </td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

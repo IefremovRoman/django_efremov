@@ -22,8 +22,11 @@ from .views import *
 
 urlpatterns = [
     # path('students/', StudentListView.as_view()),
-    path('students/', students),
+    path('students/', list_students, name='list-students'),
+    path('student/<int:student_id>', get_student, name='get-student'),
     path('create_student', create_student, name='create-student'),
-    path('generate-student/', generate_student),
-    path('generate-students/', generate_students)
+    path('edit_student/<int:student_id>', edit_student, name='edit-student'),
+    path('delete_student/<int:student_id>', delete_student, name='delete-student'),
+    path('generate_student/', generate_student, name='generate-student'),
+    path('generate_students/<int:qty>', generate_students, name='generate-students')
 ]

@@ -1,6 +1,12 @@
+import json
+from random import choice
+import os
+
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django import forms
+from django.views.generic import ListView
+from django.contrib import messages
 
 from faker import Faker
 
@@ -10,6 +16,7 @@ from .forms import TeacherForm
 # Help funcitons
 locale = 'uk_UA'
 faker = Faker(locale)
+subjects_json = 'teachers/management/commands/university_subjects.json'
 
 
 def model_pretty_viewer(query):
@@ -41,6 +48,31 @@ def teachers(request):
         return HttpResponse(output)
     return HttpResponse('Method not found')
 
+
+# Viewers
+def list_teachers(request):
+    teacher_list = [teacher.__dict__ for teacher in Teacher.objects.all()]
+    fields = Teacher._meta.fields
+    # output = model_pretty_viewer(teacher_list)
+    return render(
+                    request,
+                    'teacher_list_view.html',
+                    {
+                        'teachers': teacher_list,
+                        'fields': fields}
+                        )
+
+
+def get_teacher(request, teacher_id):
+    if teacher_id:
+        teacher = Teacher.objects.filter(id=teacher_id)
+        # fields = teacher._meta.fields
+        output = model_pretty_viewer(teacher)
+        return HttpResponse(output)
+
+    return redirect('list-teachers')
+
+
 def create_teacher(request):
     
     if request.method == 'POST':
@@ -48,80 +80,110 @@ def create_teacher(request):
         if form.is_valid():
             if Teacher.objects.filter(**form.cleaned_data).exists():
                 # raise forms.ValidationError('This data is doubling!')
-                operation_status = {
-                    'text': 'This data is doubling!',
-                    'app_link_text': 'Teacher',
-                    'app_list': 'teachers/'
-                    }
-                return render(request, 'operation_status.html', operation_status)
+                messages.error(request, 'This data is doubling!')
+                # return render(request, 'operation_status.html', operation_status)
+                return redirect('create-teacher')
                 
             else:
                 Teacher.objects.create(**form.cleaned_data)
-                operation_status = {
-                    'text': 'Teacher created successfully!',
-                    'app_link_text': 'Teacher',
-                    'app_list': 'teachers/'
-                    }
-                return render(request, 'operation_status.html', operation_status)
+                # return render(request, 'operation_status.html', operation_status)
+                return redirect('list-teachers')
 
     elif request.method == 'GET':
         form = TeacherForm()
     return render(
                     request,
-                    'creation_form.html',
+                    'teacher_create_form.html',
                     {
                         'form': form,
-                        'header':'Teacher creation form',
-                        'action':'/create_teacher',
-                        'app_link_text': 'Teacher',
-                        'app_list': 'teachers/'
                     })
 
 
-def generate_student(request):
+def edit_teacher(request, teacher_id):
+    if request.method == 'POST':
+        form = TeacherForm(request.POST)
+        if form.is_valid():
+            # if teacher.objects.filter(**form.cleaned_data).exists():
+            #    messages.error(request, 'This data is doubling!')
+                # return redirect('edit-teacher')
+            # else:    
+            Teacher.objects.update_or_create(
+                                            defaults=form.cleaned_data,
+                                            id=teacher_id)
+            return redirect('list-teachers')
+    else:
+        teacher = Teacher.objects.filter(id=teacher_id).first()
+        form = TeacherForm(instance=teacher)
 
-    Student.objects.create(
+        return render(
+                        request,
+                        'teacher_edit_form.html',
+                        {
+                            'form': form,
+                            'teacher_id': teacher_id,
+                        })
+
+
+def delete_teacher(request, teacher_id):
+    teacher = Teacher.objects.filter(id=teacher_id)
+    teacher.delete()
+    return redirect('list-teachers')
+
+
+def generate_teacher(request):
+    with open(subjects_json, 'r') as file:
+            subjects = json.load(file)
+
+    Teacher.objects.create(
                             first_name=faker.first_name(),
                             last_name=faker.last_name(),
-                            age=faker.random_int(min=17, max=30)
+                            age=faker.random_int(min=26, max=100),
+                            subject=choice(subjects),
+                            phone=f'+38000{faker.msisdn()[0:7]}'
                             )
-    student_list = Student.objects.all()
-    output = model_pretty_viewer(student_list)
-    return HttpResponse(output)
+    
+    return redirect('list-teachers')
 
 
-def generate_students(request):
-    if request.method == 'GET':
+def generate_teachers(request, qty=100):
+    # if request.method == 'GET':
 
-        count = request.GET.get('count', '100')
-        try:
-            count = int(count)
-        except ValueError:
-            return HttpResponse(f'{count} not integer')
+        # count = request.GET.get('count', '100')
+        # try:
+        #     count = int(count)
+        # except ValueError:
+        #     return HttpResponse(f'{count} not integer')
 
-        if count <= 100 and count > 0:
+        # if count <= 100 and count > 0:
 
-            for i in range(int(count)):
-                Student.objects.create(
-                                first_name=faker.first_name(),
-                                last_name=faker.last_name(),
-                                age=faker.random_int(min=17, max=30)
-                                )
-        student_list = Student.objects.all()
-        output = model_pretty_viewer(student_list)
-        return HttpResponse(output)
-    return HttpResponse('Method not found')
+    with open(subjects_json, 'r') as file:
+            subjects = json.load(file)
+
+    for _ in range(int(qty)):
+        Teacher.objects.create(
+                        first_name=faker.first_name(),
+                        last_name=faker.last_name(),
+                        age=faker.random_int(min=26, max=100),
+                        subject=choice(subjects),
+                        phone=f'+38000{faker.msisdn()[0:7]}'
+                        )
+    
+    return redirect('list-teachers')
+    # return HttpResponse('Method not found')
 
 
-# def create_student(request, student_id):
+# def create_teacher(request, teacher_id):
+#   if request.method = 'POST':
+#     form = teacherFormFromModel(request.POST)
+#     if form.is_valid():
+#      teacher.object.update_or_create(defaults=form.cleaned_data, id=teacher_id)
+#      return HttpResponseRedirect(reverse('list_teachers'))
+
+
+
+# def create_teacher(request, teacher_id):
 #    if request.method = 'POST':
-#       form = StudentFormFromModel(request.POST)
+#       form = teacherFormFromModel(request.POST)
 #       if form.is_valid():
-#          Student.object.update_or_create(defaults=form.cleaned_data, id=student_id)
-#          return HttpResponseRedirect(reverse('list_students'))
-
-
-
-
-
-
+#          teacher.object.update_or_create(defaults=form.cleaned_data, id=teacher_id)
+#          return HttpResponseRedirect(reverse('list_teachers'))

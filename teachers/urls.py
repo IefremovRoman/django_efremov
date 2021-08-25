@@ -20,6 +20,12 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('teachers/', teachers),
-    path('create_teacher', create_teacher),
+    # path('students/', StudentListView.as_view()),
+    path('teachers/', list_teachers, name='list-teachers'),
+    path('teacher/<int:teacher_id>', get_teacher, name='get-teacher'),
+    path('create_teacher', create_teacher, name='create-teacher'),
+    path('edit_teacher/<int:teacher_id>', edit_teacher, name='edit-teacher'),
+    path('delete_teacher/<int:teacher_id>', delete_teacher, name='delete-teacher'),
+    path('generate_teacher/', generate_teacher, name='generate-teacher'),
+    path('generate_teacher/<int:qty>', generate_teachers, name='generate-teachers')
 ]

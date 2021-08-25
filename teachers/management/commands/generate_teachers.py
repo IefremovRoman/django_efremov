@@ -9,7 +9,7 @@ from students.models import Teacher
 
 
 faker = Faker()
-json_file = 'students/management/commands/university_subjects.json'
+json_file = '/management/commands/university_subjects.json'
 
 
 class Command(BaseCommand):
