@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+	<br><h1 style="font-size: 40px">Hello, world!</h1>
+	<br><h2>Map of my site:</h2>
+	<br><a href="admin/" title="Admin tools">Admin site</a>
+	<br><h2>Students' section</h2>
+	<br><a href="{% url 'list-students' %}" title="This link shows all students">List</a>
+	<br><a href="{% url 'get-student' 1 %}" title="This link shows specified student by id">Get</a>
+	<br><a href="{% url 'create-student' %}" title="This link allows to create a student">Create</a>
+	<br><a href="{% url 'edit-student' 1 %}" title="This link allows to edit the student by id">Edit</a>
+	<br><a href="{% url 'generate-student' %}" title="By this link it generates 1 new random student">Add 1 student</a>
+	<br><a href="{% url 'generate-students' 100 %}" title="By this link you can give to a 'count' parameter some 0 to 100 number and it generates new students, 100 by default">Generate n students</a>
+	<br><h2>Groups' section</h2>
+	<br><a href="{% url 'list-groups' %}" title="This link shows all groups">List</a>
+	<br><a href="{% url 'get-group' 1 %}" title="This link shows specified group by id">Get</a>
+	<br><a href="{% url 'create-group' %}" title="This link allows to create a group">Create</a>
+	<br><a href="{% url 'edit-group' 1 %}" title="This link allows to edit the group by id">Edit</a>
+	<br><h2>Teachers' section</h2>
+	<br><a href="{% url 'list-teachers' %}" title="This link shows all teachers">List</a>
+	<br><a href="{% url 'get-teacher' 1 %}" title="This link shows specified teacher by id">Get</a>
+	<br><a href="{% url 'create-teacher' %}" title="This link allows to create a teacher">Create</a>
+	<br><a href="{% url 'edit-teacher' 1 %}" title="This link allows to edit the teacher by id">Edit</a>
+	<br><a href="{% url 'generate-teacher' %}" title="By this link it generates 1 new random teacher">Add 1 teacher</a>
+	<br><a href="{% url 'generate-teachers' 100 %}" title="By this link you can give to a 'count' parameter some 0 to 100 number and it generates new teachers, 100 by default">Generate n teachers</a>
+</div>
+
+
+<style>
+	a {
+		text-decoration: none;
+		font-family: Gill Sans, sans-serif;
+		font-size: 25px;
+	}
+
+	a:hover {
+		text-decoration: underline;
+		font-size: 40px;
+	}
+</style>
+{% endblock %}

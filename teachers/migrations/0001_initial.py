@@ -13,12 +13,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Student',
+            name='Teacher',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('first_name', models.CharField(max_length=24)),
                 ('last_name', models.CharField(max_length=24)),
                 ('age', models.IntegerField(default=0)),
+                ('subject', models.CharField(max_length=24)),
                 ('phone', models.CharField(blank=True, default='+00000000000000', max_length=15, validators=[django.core.validators.RegexValidator(message="Phone number must be entered in the format: '+999999999'.                             Up to 15 digits allowed.", regex='^\\+?1?\\d{9,15}$')])),
             ],
         ),

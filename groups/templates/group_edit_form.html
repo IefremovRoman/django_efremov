@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<body>
+   
+  <h2>Group edit form</h2>
+  <form action="{% url 'edit-group' group_id %}" method="post">
+    {% csrf_token %}
+    
+    <div>
+    {% for field in form %}
+      <div>
+        <p class="text field_item">{{ field.label_tag }}</p>
+        <div class="field_item">{{ field }}</div>
+      </div>
+    {% endfor %}
+    </div>
+      
+    <input class="text" type="submit" value="Submit">
+  </form>
+  <br><a class="text" href="/">Back to Home</a>
+  <br><a class="text" href="/groups">Group list</a>
+  <br><a class="text" href="/admin">Admin site</a>
+</body>
+</html>
+
+<style type="text/css">
+  a {
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .text {
+    font-family: Verdana, fantasy;
+    font-weight: 200;
+    font-size: large;
+    
+  }
+
+  .field_item {
+    padding: 0px;
+    margin: 0px;
+  }
+
+  h2.errorMsg {
+    color: red;
+  }
+</style>
+{% endblock %}

@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 phone_valitation_message = "Phone number must be entered in the format: '+999999999'. \
                             Up to 15 digits allowed."
 
-class Student(models.Model):
+class Teacher(models.Model):
     phone_regex = RegexValidator(
                                     regex=r'^\+?1?\d{9,15}$',
                                     message=phone_valitation_message
@@ -13,6 +13,7 @@ class Student(models.Model):
     first_name = models.CharField(max_length=24)
     last_name = models.CharField(max_length=24)
     age = models.IntegerField(default=0)
+    subject = models.CharField(max_length=24)
     phone = models.CharField(
                                 validators=[phone_regex],
                                 default='+00000000000000',
@@ -25,4 +26,5 @@ class Student(models.Model):
                     {self.first_name} \
                     {self.last_name} \
                     {self.age} \
+                    {self.subject}\
                     {self.phone}'
