@@ -15,9 +15,13 @@
       </div>
     {% endfor %}
     </div>
-      
     <input class="text" type="submit" value="Submit">
   </form>
+  {% if messages %}
+    {% for message in messages %}
+      <h2 class="errorMsg">{{ message }}</h2>
+    {% endfor %}
+  {% endif %}
   <br><a class="text" href="/">Back to Home</a>
   <br><a class="text" href="/teachers">Teacher list</a>
   <br><a class="text" href="/admin">Admin site</a>

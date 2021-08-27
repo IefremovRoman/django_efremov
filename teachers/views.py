@@ -81,13 +81,15 @@ def create_teacher(request):
             if Teacher.objects.filter(**form.cleaned_data).exists():
                 # raise forms.ValidationError('This data is doubling!')
                 messages.error(request, 'This data is doubling!')
-                # return render(request, 'operation_status.html', operation_status)
                 return redirect('create-teacher')
                 
             else:
-                Teacher.objects.create(**form.cleaned_data)
-                # return render(request, 'operation_status.html', operation_status)
+                Teacher(**form.cleaned_data).save()
                 return redirect('list-teachers')
+
+        else:
+            messages.error(request, 'Invalid phone format! Please, try again.')
+            return redirect('create-teacher')
 
     elif request.method == 'GET':
         form = TeacherForm()
@@ -111,7 +113,12 @@ def edit_teacher(request, teacher_id):
                                             defaults=form.cleaned_data,
                                             id=teacher_id)
             return redirect('list-teachers')
-    else:
+
+        else:
+            messages.error(request, 'Invalid phone format! Please, try again.')
+            return redirect('edit-teacher')
+
+    elif request.method == 'GET':
         teacher = Teacher.objects.filter(id=teacher_id).first()
         form = TeacherForm(instance=teacher)
 
@@ -122,6 +129,9 @@ def edit_teacher(request, teacher_id):
                             'form': form,
                             'teacher_id': teacher_id,
                         })
+
+    else:
+        return HttpResponse('Method not registered')
 
 
 def delete_teacher(request, teacher_id):
