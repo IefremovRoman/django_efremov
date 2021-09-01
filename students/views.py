@@ -27,8 +27,9 @@ def list_students(request):
                     'student_list_view.html',
                     {
                         'students': student_list,
-                        'fields': fields}
-                        )
+                        'fields': fields
+                    }
+                )
 # class StudentListView(ListView):
 #   model = Student
 #   template_name  = "list_view.html"

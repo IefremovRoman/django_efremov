@@ -16,7 +16,7 @@ class Student(models.Model):
                                                                 message=phone_valitation_message,
                                                                 code='invalid'
                                                                 )
-                                ],
+                                            ],
                                 default='+00000000000000',
                                 max_length=15,
                                 blank=True
@@ -33,5 +33,5 @@ class Student(models.Model):
 class Logger(models.Model):
     method = models.CharField(max_length=12)
     path = models.CharField(max_length=50)
-    execution_time = models.TimeField(null=False)
+    execution_time = models.FloatField(null=False)
     created = models.DateTimeField(auto_now_add=True)

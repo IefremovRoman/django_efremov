@@ -59,8 +59,9 @@ def list_teachers(request):
                     'teacher_list_view.html',
                     {
                         'teachers': teacher_list,
-                        'fields': fields}
-                        )
+                        'fields': fields
+                    }
+                )
 
 
 def get_teacher(request, teacher_id):

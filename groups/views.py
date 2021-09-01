@@ -27,7 +27,8 @@ def list_groups(request):
                     'group_list_view.html',
                     {
                         'groups': group_list,
-                        'fields': fields}
+                        'fields': fields
+                    }
                 )
 # def list_groups(request):
 #     group = Group.objects.all()
