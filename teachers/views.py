@@ -117,7 +117,7 @@ def edit_teacher(request, teacher_id):
 
         else:
             messages.error(request, 'Invalid phone format! Please, try again.')
-            return redirect('edit-teacher')
+            return redirect('edit-teacher', teacher_id)
 
     elif request.method == 'GET':
         teacher = Teacher.objects.filter(id=teacher_id).first()
