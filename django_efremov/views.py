@@ -1,13 +1,33 @@
 from django.shortcuts import render
-from django.views.generic import ListView
 from django.http import HttpResponse, HttpResponseRedirect
+# from django.views.generic import ListView
 
+from .forms import ContactUS
+from .tasks import contact_us_send_mail
 
 def index(request):
     return render(request, 'index.html')
 
-def model_pretty_viewer(query):
-    return '<br/>'.join(str(q) for q in query)
+
+def contact_us(request):
+    if request.method == 'POST':
+        form = ContactUS(request.POST)
+        if form.is_valid():
+            contact_us_send_mail.delay(
+                title=form.cleaned_data.get('title'),
+                message=form.cleaned_data.get('message'),
+                from_email=form.cleaned_data.get('email_from'),
+                recipient_list=['danepe6714@sicmag.com']
+            )
+            # return HttpResponse([title, message, from_email, recipient_list])
+            return HttpResponse('Your message has been sent! Thanks for you request!')
+    elif request.method == 'GET':
+        form = ContactUS()
+        return render(request, 'contactUS.html', {'form': form})
+
+
+# def model_pretty_viewer(query):
+#     return '<br/>'.join(str(q) for q in query)
 
 
 # from django.urls import path
