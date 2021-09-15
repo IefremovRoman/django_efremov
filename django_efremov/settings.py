@@ -26,10 +26,10 @@ CELERY_BROKER_URL = 'pyamqp://guest@localhost//'
 
 CELERY_BEAT_SCHEDULE = {
         'daily_admin_logs_clean':
-                {
-                    'task': 'tasks.clean_admin_logs',
-                    'schedule': crontab(minute=0, hour=12),
-                }
+            {
+                'task': 'django_efremov.tasks.clean_admin_logs',
+                'schedule': crontab(minute=0, hour=12)
+            }
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -3,14 +3,25 @@
 {% block content %}
 <body>
     <div >
-        <form action='/contact_us' method="post">
+        <form action="{% url 'contact-us' %}" method="post">
             {% csrf_token %}
             {{ form.as_table }}
             <button class="button-6" role="button">Send</button>
+            <a href="{% url 'index' %}" class="button-6">Home</a>
+            {% if messages %}
+                {% for message in messages %}
+                  <h2>{{ message }}</h2>
+              {% endfor %}
+            {% endif %}
         </form>
-     </div>
+    </div>
 </body>
 
+{#<script>#}
+{#    setTimeout(function(){#}
+{#        window.location.href = '{% url 'index' %}';#}
+{#    }, 3000);#}
+{#</script>#}
 
 <style>
 
