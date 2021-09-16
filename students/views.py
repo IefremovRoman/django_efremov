@@ -118,7 +118,8 @@ def generate_student(request):
                             first_name=faker.first_name(),
                             last_name=faker.last_name(),
                             age=faker.random_int(min=17, max=30),
-                            phone=f'+38000{faker.msisdn()[0:7]}'
+                            phone=f'+38000{faker.msisdn()[0:7]}',
+
                             )
     
     return redirect('list-students')

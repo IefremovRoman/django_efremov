@@ -1,29 +1,73 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Groups</h2>
-<table >
-	<tr>
-	    {% for field in fields %}
-	        <th>{{ field.name.title }}</th>
-	    {% endfor %}
-	    <th>Edit action</th>
-	    <th>Delete action</th>
-	</tr>
-	{% for group in groups %}
-	<tr>
-		{% for k,v in group.items %}
-			{% if k != '_state' %}
-	        	<td>{{ v }}</td>
-	        {% endif %}
-	    {% endfor %}
-		<td>
-			<a href="{% url 'edit-group' group.id %}">Edit</a>
-		</td>
-	    <td>
-	    	<a href="{% url 'delete-group' group.id %}">Delete</a>
-	    </td>
-	</tr>
-	{% endfor %}
-</table>
+<h1>Groups</h1>
+    <div>
+    {% for group in groups %}
+
+        <table>
+            <tr>
+                <td><h3>Teacher name : {{ group.teacher.first_name }} {{ group.teacher.last_name }}</h3></td>
+                <td style="width: 15px"></td>
+                <td><h3>Teacher id : {{ group.teacher.id }}</h3></td>
+            </tr>
+        </table>
+        <div class="group-section">
+            <table >
+    {#            <tr>#}
+    {#                {% for field in fields %}#}
+    {#                    {% if field.name.title != 'Teacher_Id' %}#}
+    {#                        <th>{{ field.name.title }}</th>#}
+    {#                    {% endif %}#}
+    {#                {% endfor %}#}
+    {#                <th>Edit action</th>#}
+    {#                <th>Delete action</th>#}
+    {#            </tr>#}
+
+                <tr>
+                    {% for k,v in group.group.items %}
+                        {% if k != '_state' and k != 'teacher_id_id' %}
+                            <td>
+                                <p>{{ k.title }} : {{ v }} </p>
+                            </td>
+                            <td style="width: 2px"></td>
+                        {% endif %}
+                    {% endfor %}
+                    <td>
+                        <a href="{% url 'edit-group' group.group.id %}">Edit</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'delete-group' group.group.id %}">Delete</a>
+                    </td>
+                </tr>
+
+            </table>
+            <table >
+                <tr>
+                    {% for field in fields %}
+                        <th>{{ field.name.title }}</th>
+                    {% endfor %}
+                    <th>Edit action</th>
+                    <th>Delete action</th>
+                </tr>
+                {% for student in students %}
+                <tr>
+                    {% for k,v in student.items %}
+                        {% if k != '_state' %}
+                            <td>{{ v }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    <td>
+                        <a href="{% url 'edit-student' student.id %}">Edit</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'delete-student' student.id %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div style="border-top: 1px solid darkslategrey;"></div>
+        </div>
+    {% endfor %}
+    </div>
 {% endblock %}

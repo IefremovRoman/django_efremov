@@ -21,9 +21,9 @@ def contact_us(request):
                                         from_email=form.cleaned_data.get('email_from'),
                                         recipient_list=[
                                                         'danepe6714@sicmag.com',
-                                                        'vitalik1996@gmail.com'
                                                         ]
                                         )
+            #'vitalik1996@gmail.com'
             messages.success(request, 'Your message has been sent! Thanks for you request!')
             return redirect('contact-us')
     elif request.method == 'GET':

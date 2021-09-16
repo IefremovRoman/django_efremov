@@ -1,8 +1,10 @@
 from django.db import models
 from django.core.validators import RegexValidator
 
+from groups.models import Group
 
-phone_valitation_message = "Phone number must be entered in the format: '+999999999'. \
+
+phone_validation_message = "Phone number must be entered in the format: '+999999999'. \
                             Up to 15 digits allowed."
 
 class Student(models.Model):
@@ -13,7 +15,7 @@ class Student(models.Model):
                                 validators=[
                                                 RegexValidator(
                                                                 regex=r'^\+?1?\d{12,15}$',
-                                                                message=phone_valitation_message,
+                                                                message=phone_validation_message,
                                                                 code='invalid'
                                                                 )
                                             ],
@@ -21,14 +23,27 @@ class Student(models.Model):
                                 max_length=15,
                                 blank=True
                             )
+    group_id = models.ForeignKey(
+                                Group,
+                                blank=True,
+                                default=None,
+                                on_delete=models.CASCADE)
+
+
 
     def __str__(self):
         return f'{self.id} \
                     {self.first_name} \
                     {self.last_name} \
                     {self.age} \
-                    {self.phone}'
+                    {self.phone} \
+                    {self.group_id}'
 
+    def __dict__(self):
+        return dict(id=self.id, first_name=self.first_name, last_name=self.last_name, age=self.age,
+                    phone=self.phone)
+
+#{self.Group.objects.filter(id=self.group_id)}
 
 class Logger(models.Model):
     method = models.CharField(max_length=12)
