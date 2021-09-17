@@ -22,19 +22,34 @@ def model_pretty_viewer(query):
 # Viewers
 def list_groups(request):
     group_list = [group.__dict__ for group in Group.objects.all()]
-    teachers_id = [g.get('teacher_id_id') for g in group_list]
+    teachers_id = [group.get('teacher_id_id') for group in group_list]
     teachers = [Teacher.objects.filter(id=t_id).values()[0] for t_id in teachers_id]
-    groups = [{'teacher': teacher, 'group': group} for teacher, group in zip(teachers, group_list)]
-    student_queryset = [Student.objects.filter(group_id=g.get('id')).values() for g in group_list]
-    # students = [student for subset in student_queryset for student in subset]
     students = []
-    breakpoint()
+    for group in group_list:
+        students.append([s for s in Student.objects.filter(group_id=group.get('id')).values()])
+
+    groups = [
+                {'teacher': t,
+                 'group': g,
+                 'students': s} for t, g, s in zip(teachers, group_list, students)]
+
+        # students = [Student.objects.filter(group_id=group.get('id')).values() for group in group_list]
+        # groups = [{'teacher': teacher, 'group': group} for teacher, group in zip(teachers, group_list)]
+
+    # students = []
+    # for group in group_list:
+    #     students.append(
+    #                     {'id': group.get('id'),
+    #                      'students': [s for s in Student.objects.filter(group_id=group.get('id')).values()]
+    #                      }
+    #                     )
+    student_fields = Student._meta.fields
     return render(
                     request,
                     'group_list_view.html',
                     {
                         'groups': groups,
-                        'students': students
+                        'student_fields': student_fields
                     }
                 )
 # def list_groups(request):
