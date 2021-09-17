@@ -35,4 +35,9 @@ class Group(models.Model):
                     {self.finish_year} \
                     {self.student_quantity}'
 
+    # def group_to_dict(self):
+    #     return {
+    #         'id'
+    #     }
+
 #{self.Teacher.objects.filter(id=self.teacher_id)}

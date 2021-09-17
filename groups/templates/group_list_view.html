@@ -4,15 +4,9 @@
 <h1>Groups</h1>
     <div>
     {% for group in groups %}
-        <table>
-            <tr>
-                <td><h3>Teacher name : {{ group.teacher.first_name }} {{ group.teacher.last_name }}</h3></td>
-                <td style="width: 15px"></td>
-                <td><h3>Teacher id : {{ group.teacher.id }}</h3></td>
-            </tr>
-        </table>
+        {#Group table#}
         <div class="group-section">
-        <h3>Group</h3>
+        <h3>Group {{ group.group.title }}</h3>
             <table>
                 <tr>
                 {% for k,v in group.group.items %}
@@ -32,16 +26,27 @@
                 </tr>
             </table>
         </div>
+        <div style="padding-bottom: 20px"></div>
+        {#Teacher table#}
+        <table>
+            <tr>
+                <td><h3>Curator name : {{ group.teacher.first_name }} {{ group.teacher.last_name }}</h3></td>
+                <td style="width: 15px"></td>
+                <td><h3>Id : {{ group.teacher.id }}</h3></td>
+            </tr>
+        </table>
         {#Student table#}
         <div class="student-section">
         <h3>Students</h3>
-            <table >
+            <table style="border-spacing: 5px;" cellpadding="5">
                 <tr>
                     {% for field in student_fields %}
-                        <th>{{ field.name.title }}</th>
+                        {% if field.name != 'group_id' %}
+                            <th align="left">{{ field.name.title }}</th>
+                        {% endif %}
                     {% endfor %}
-                    <th>Edit action</th>
-                    <th>Delete action</th>
+                    <th align="left">Edit action</th>
+                    <th align="left">Delete action</th>
                 </tr>
                 {% for student in group.students %}
                     <tr>

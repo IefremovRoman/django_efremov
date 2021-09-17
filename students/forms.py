@@ -13,7 +13,7 @@ class StudentForm(forms.ModelForm):
     # student_choice = forms.ModelChoiceField(queryset=Student.objects.all())
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'age', 'phone']
+        fields = ['first_name', 'last_name', 'age', 'phone', 'group_id']
 
 # class StudentForm(forms.Form):
     # first_name = forms.CharField(label="Student\'s' first name", max_length=24)
