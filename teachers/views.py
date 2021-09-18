@@ -16,7 +16,7 @@ from .forms import TeacherForm
 # Help funcitons
 locale = 'uk_UA'
 faker = Faker(locale)
-subjects_json = 'teachers/management/commands/university_subjects.json'
+subject_json = 'teachers/management/commands/university_subjects.json'
 
 
 def model_pretty_viewer(query):
@@ -142,7 +142,7 @@ def delete_teacher(request, teacher_id):
 
 
 def generate_teacher(request):
-    with open(subjects_json, 'r') as file:
+    with open(subject_json, 'r') as file:
             subjects = json.load(file)
 
     Teacher.objects.create(
@@ -167,7 +167,7 @@ def generate_teachers(request, qty=100):
 
         # if count <= 100 and count > 0:
 
-    with open(subjects_json, 'r') as file:
+    with open(subject_json, 'r') as file:
             subjects = json.load(file)
 
     for _ in range(int(qty)):

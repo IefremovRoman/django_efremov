@@ -6,7 +6,15 @@
     {% for group in groups %}
         {#Group table#}
         <div class="group-section">
-        <h3>Group {{ group.group.title }}</h3>
+        <h3>
+            <span>Group</span>
+            <span> </span>
+            {% if tmpl_flg == 'get' %}
+                <span>{{ group.group.title }}</span>
+            {% else %}
+                <a href="{% url 'get-group' group.group.id %}"><span>{{ group.group.title }}</span></a>
+            {% endif %}
+        </h3>
             <table>
                 <tr>
                 {% for k,v in group.group.items %}
@@ -33,6 +41,8 @@
                 <td><h3>Curator name : {{ group.teacher.first_name }} {{ group.teacher.last_name }}</h3></td>
                 <td style="width: 15px"></td>
                 <td><h3>Id : {{ group.teacher.id }}</h3></td>
+                <td style="width: 15px"></td>
+                <td><h3>Phone number : {{ group.teacher.phone }}</h3></td>
             </tr>
         </table>
         {#Student table#}
@@ -65,6 +75,7 @@
                 {% endfor %}
             </table>
         </div>
+        <h4>Total students in group: {{ group.group_len }}</h4>
     <div style="border-top: 1px solid darkslategrey;"></div>
     {% endfor %}
     </div>

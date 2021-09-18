@@ -31,6 +31,6 @@ class Teacher(models.Model):
                     {self.subject}\
                     {self.phone}'
 
-    def __dict__(self):
-        return dict(id=self.id, first_name=self.first_name, last_name=self.last_name, age=self.age,
-                    subject=self.subject, phone=self.phone)
+    # def __dict__(self):
+    #     return dict(id=self.id, first_name=self.first_name, last_name=self.last_name, age=self.age,
+    #                 subject=self.subject, phone=self.phone)

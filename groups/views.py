@@ -19,56 +19,62 @@ def model_pretty_viewer(query):
     return '<br/>'.join(str(q) for q in query)
     # return '<br/>'.join(map(str, query)) 
 
+
 # Viewers
 def list_groups(request):
     group_list = [group.__dict__ for group in Group.objects.all()]
     teachers_id = [group.get('teacher_id_id') for group in group_list]
-    teachers = [Teacher.objects.filter(id=t_id).values()[0] for t_id in teachers_id]
-    students = []
+    teacher_list = [Teacher.objects.filter(id=t_id).values()[0] for t_id in teachers_id]
+    student_list = []
     for group in group_list:
-        students.append([s for s in Student.objects.filter(group_id=group.get('id')).values()])
+        student_list.append([s for s in Student.objects.filter(group_id=group.get('id')).values()])
 
     groups = [
-                {'teacher': t,
-                 'group': g,
-                 'students': s} for t, g, s in zip(teachers, group_list, students)]
+        {'teacher': t,
+         'group': g,
+         'students': s,
+         'group_len': len(s)}
+        for t, g, s in zip(teacher_list, group_list, student_list)]
 
-        # students = [Student.objects.filter(group_id=group.get('id')).values() for group in group_list]
-        # groups = [{'teacher': teacher, 'group': group} for teacher, group in zip(teachers, group_list)]
-
-    # students = []
-    # for group in group_list:
-    #     students.append(
-    #                     {'id': group.get('id'),
-    #                      'students': [s for s in Student.objects.filter(group_id=group.get('id')).values()]
-    #                      }
-    #                     )
     student_fields = Student._meta.fields
     return render(
-                    request,
-                    'group_list_view.html',
-                    {
-                        'groups': groups,
-                        'student_fields': student_fields
-                    }
-                )
-# def list_groups(request):
-#     group = Group.objects.all()
-#     output = model_pretty_viewer(group)
-#     return HttpResponse(output)
+        request,
+        'group_list_view.html',
+        {
+            'groups': groups,
+            'student_fields': student_fields,
+            'tmpl_flg': 'list'
+        }
+    )
+
 
 def get_group(request, group_id):
     if group_id:
-        group = Group.objects.filter(id=group_id)
-        # fields = group._meta.fields
-        output = model_pretty_viewer(group)
-        return HttpResponse(output)
+        group = Group.objects.filter(id=group_id).values()[0]
+        teacher_id = group.get('teacher_id_id')
+        teacher = Teacher.objects.filter(id=teacher_id).values()[0]
+        students = [s for s in Student.objects.filter(group_id=group.get('id')).values()]
+        groups = [{
+            'teacher': teacher,
+            'group': group,
+            'students': students,
+            'group_len': len(students)}
+        ]
+        student_fields = Student._meta.fields
+        return render(
+            request,
+            'group_list_view.html',
+            {
+                'groups': groups,
+                'student_fields': student_fields,
+                'tmpl_flg': 'get'
+            }
+        )
 
     return redirect('list-groups')
 
 
 def create_group(request):
-    
     if request.method == 'POST':
         form = GroupForm(request.POST)
         if form.is_valid():
@@ -76,11 +82,11 @@ def create_group(request):
                 # raise forms.ValidationError('This data is doubling!')
                 messages.error(request, 'This data is doubling!')
                 return redirect('create-group')
-                
+
             else:
                 Group(**form.cleaned_data).save()
                 return redirect('list-groups')
-        
+
         else:
             messages.error(request, 'Start or finish year is exceeded limits! Please, try again.')
             return redirect('create-group')
@@ -88,11 +94,11 @@ def create_group(request):
     elif request.method == 'GET':
         form = GroupForm()
     return render(
-                    request,
-                    'group_create_form.html',
-                    {
-                        'form': form,
-                    })
+        request,
+        'group_create_form.html',
+        {
+            'form': form,
+        })
 
 
 def edit_group(request, group_id):
@@ -101,29 +107,29 @@ def edit_group(request, group_id):
         if form.is_valid():
             # if group.objects.filter(**form.cleaned_data).exists():
             #    messages.error(request, 'This data is doubling!')
-                # return redirect('edit-group')
+            # return redirect('edit-group')
             # else:    
             Group.objects.update_or_create(
-                                            defaults=form.cleaned_data,
-                                            id=group_id)
+                defaults=form.cleaned_data,
+                id=group_id)
             return redirect('list-groups')
-        
+
         else:
             messages.error(request, 'Start or finish year is exceeded limits! Please, try again.')
             return redirect('edit-group', group_id)
-    
+
     elif request.method == 'GET':
         group = Group.objects.filter(id=group_id).first()
         form = GroupForm(instance=group)
 
         return render(
-                        request,
-                        'group_edit_form.html',
-                        {
-                            'form': form,
-                            'group_id': group_id
-                        })
-    
+            request,
+            'group_edit_form.html',
+            {
+                'form': form,
+                'group_id': group_id
+            })
+
     else:
         return HttpResponse('Method not registered')
 

@@ -115,12 +115,17 @@ def delete_student(request, student_id):
     return redirect('list-students')
 
 
+
 def generate_student(request):
+    from random import choice
+    from groups.models import Group
+    groups = Group.objects.all()
     Student.objects.create(
-        first_name=faker.first_name(),
-        last_name=faker.last_name(),
-        age=faker.random_int(min=17, max=30),
-        phone=f'+38000{faker.msisdn()[0:7]}',
+                            last_name=faker.last_name(),
+                            first_name=faker.first_name(),
+                            age=faker.random_int(min=17, max=30),
+                            phone=f'+38000{faker.msisdn()[0:7]}',
+                            group_id=choice(groups)
 
     )
 
@@ -137,13 +142,17 @@ def generate_students(request, qty=100):
     #     return HttpResponse(f'{count} not integer')
 
     # if count <= 100 and count > 0:
+    from random import choice
+    from groups.models import Group
+    groups = Group.objects.all()
 
     for i in range(int(qty)):
         Student.objects.create(
             first_name=faker.first_name(),
             last_name=faker.last_name(),
             age=faker.random_int(min=17, max=30),
-            phone=f'+38000{faker.msisdn()[0:7]}'
+            phone=f'+38000{faker.msisdn()[0:7]}',
+            group_id=choice(groups)
         )
 
     return redirect('list-students')
