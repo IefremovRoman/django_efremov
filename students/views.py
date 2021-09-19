@@ -81,12 +81,25 @@ def edit_student(request, student_id):
         form = StudentForm(request.POST)
         if form.is_valid():
             # if Student.objects.filter(**form.cleaned_data).exists():
-            #    messages.error(request, 'This data is doubling!')
-            # return redirect('edit-student')
-            # else:    
+            #
+            # else:
+            # student = Student.objects.filter(**form.cleaned_data)
+            # student = Student.objects.filter(id=student_id)
             Student.objects.update_or_create(
-                defaults=form.cleaned_data,
-                id=student_id)
+                                            defaults=form.cleaned_data,
+                                            id=student_id)
+
+            # Student(**form.cleaned_data).save()
+
+            # try:
+            #     student = Student.objects.filter(id=student_id).first()
+            #     student.save()
+            #     # for key, value in form.cleaned_data.items():
+            #     #     setattr(student, key, value)
+            #     # student.save()
+            # except Student.DoesNotExist:
+            #     Student(**form.cleaned_data).save()
+
             return redirect('list-students')
 
         else:

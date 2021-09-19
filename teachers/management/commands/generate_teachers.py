@@ -50,13 +50,13 @@ class Command(BaseCommand):
             )
             group.save()
             for s in range(students_qnt):
-                student = Student.objects.create(
-                                                first_name=faker.first_name(),
-                                                last_name=faker.last_name(),
-                                                age=faker.random_int(min=17, max=30),
-                                                phone=f'+38000{faker.msisdn()[0:7]}',
-                                                group_id=group,
+                student = Student(
+                                    first_name=faker.first_name(),
+                                    last_name=faker.last_name(),
+                                    age=faker.random_int(min=17, max=30),
+                                    phone=f'+38000{faker.msisdn()[0:7]}',
+                                    group_id=group,
                 )
-
+                student.save()
         message = f'{total} teacher(s) successfully created!'
         self.stdout.write(self.style.SUCCESS(message))
