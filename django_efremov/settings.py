@@ -25,11 +25,16 @@ if os.path.isfile(dotenv_file):
 CELERY_BROKER_URL = 'pyamqp://guest@localhost//'
 
 CELERY_BEAT_SCHEDULE = {
-        'daily_admin_logs_clean':
-            {
-                'task': 'django_efremov.tasks.clean_admin_logs',
-                'schedule': crontab(minute=0, hour=12)
-            }
+    'daily_admin_logs_clean': {
+        'task': 'django_efremov.tasks.clean_admin_logs',
+        'schedule': crontab(minute=0, hour=12)
+    },
+
+    'daily_parse_currencies': {
+        'task': 'service_apps.tasks.currency_parser',
+        # 'schedule': crontab(minute='*/5')
+        'schedule': crontab(minute=0, hour=12)
+    }
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -52,13 +57,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
     'groups.apps.GroupsConfig',
     'students.apps.StudentsConfig',
     'teachers.apps.TeachersConfig',
+    'service_apps.apps.ServiceAppsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -101,7 +106,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_efremov.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -111,7 +115,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -131,7 +134,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -143,8 +145,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
-
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
