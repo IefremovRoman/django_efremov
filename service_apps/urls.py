@@ -15,22 +15,14 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
 
 from .views import *
 
-
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', index, name='index'),
-    path('contact_us', contact_us, name='contact-us'),
-    path('', include('groups.urls')),
-    path('', include('service_apps.urls')),
-    path('', include('students.urls')),
-    path('', include('teachers.urls'))
+    path('currencies/', list_currencies, name='list-currencies'),
+    # path('group/<int:group_id>', get_group, name='get-group'),
+    # path('create_group', create_group, name='create-group'),
+    # path('edit_group/<int:group_id>', edit_group, name='edit-group'),
+    # path('delete_group/<int:group_id>', delete_group, name='delete-group')
 ]
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)), ] + urlpatterns

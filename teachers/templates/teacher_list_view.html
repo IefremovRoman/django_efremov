@@ -2,28 +2,32 @@
 
 {% block content %}
 <h2>Teachers</h2>
-<table cellpadding="5">
-	<tr>
-	    {% for field in fields %}
-	        <th align="left">{{ field.name.title }}</th>
-	    {% endfor %}
-	    <th align="left">Edit action</th>
-	    <th align="left">Delete action</th>
-	</tr>
-	{% for teacher in teachers %}
-	<tr>
-		{% for k,v in teacher.items %}
-			{% if k != '_state' %}
-	        	<td>{{ v }}</td>
-	        {% endif %}
-	    {% endfor %}
-		<td>
-			<a href="{% url 'edit-teacher' teacher.id %}">Edit</a>
-		</td>
-	    <td>
-	    	<a href="{% url 'delete-teacher' teacher.id %}">Delete</a>
-	    </td>
-	</tr>
-	{% endfor %}
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            {% for field in fields %}
+                <th align="left">{{ field.name.title }}</th>
+            {% endfor %}
+            <th align="left">Edit action</th>
+            <th align="left">Delete action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for teacher in teachers %}
+        <tr>
+            {% for k,v in teacher.items %}
+                {% if k != '_state' %}
+                    <td>{{ v }}</td>
+                {% endif %}
+            {% endfor %}
+            <td>
+                <a href="{% url 'edit-teacher' teacher.id %}">Edit</a>
+            </td>
+            <td>
+                <a href="{% url 'delete-teacher' teacher.id %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock %}

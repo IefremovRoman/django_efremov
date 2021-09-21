@@ -20,7 +20,7 @@ def model_pretty_viewer(query):
 
 # Viewers
 def list_students(request):
-    student_list = [student.__dict__ for student in Student.objects.all()]
+    students = [student.__dict__ for student in Student.objects.all()]
     fields = Student._meta.fields
     # output = model_pretty_viewer(student_list)
     # breakpoint()
@@ -28,7 +28,7 @@ def list_students(request):
         request,
         'student_list_view.html',
         {
-            'students': student_list,
+            'students': students,
             'fields': fields
         }
     )
