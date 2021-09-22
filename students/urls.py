@@ -16,13 +16,13 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path
-# from .views import StudentListView
+from .views import StudentListView
 
 from .views import *
 
 urlpatterns = [
-    # path('students/', StudentListView.as_view()),
-    path('students/', list_students, name='list-students'),
+    path('students/', StudentListView.as_view(), name='list-students'),
+    # path('students/', list_students, name='list-students'),
     path('student/<int:student_id>', get_student, name='get-student'),
     path('create_student', create_student, name='create-student'),
     path('edit_student/<int:student_id>', edit_student, name='edit-student'),

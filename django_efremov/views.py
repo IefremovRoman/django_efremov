@@ -1,15 +1,14 @@
-from time import sleep
-
+from django.views.generic import ListView
 from django.shortcuts import render
-# from django.views.generic import ListView
 from django.contrib import messages
 
 from .forms import ContactUS
-from .tasks import contact_us_send_mail#, delayed_redirect
+from .tasks import contact_us_send_mail
+#, delayed_redirect
 
-def index(request):
-    return render(request, 'index.html')
 
+class PersonListView(ListView):
+    template_name = "service_list.html"
 
 def contact_us(request):
     if request.method == 'POST':
@@ -59,11 +58,6 @@ def handler500(request, *args, **argv):
 # 	return urlpatterns
 
 # path('', include(list_view_factory(Student, 'students'))),
-
-
-# class StudentListView(ListView):
-#     model = Student
-#     template_name = "list_view.html"
 
 
 # def create_factory(FormClass, model):

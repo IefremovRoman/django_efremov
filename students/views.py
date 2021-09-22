@@ -8,6 +8,8 @@ from faker import Faker
 from .models import Student
 from .forms import StudentForm
 
+from django_efremov.views import PersonListView
+
 # Help funcitons
 locale = 'uk_UA'
 faker = Faker(locale)
@@ -19,17 +21,25 @@ def model_pretty_viewer(query):
 
 
 # Viewers
-def list_students(request):
-    students = [student.__dict__ for student in Student.objects.all()]
-    fields = Student._meta.fields
-    return render(
-        request,
-        'student_list_view.html',
-        {
-            'students': students,
-            'fields': fields
-        }
-    )
+class StudentListView(PersonListView):
+    model = Student
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['fields'] = Student._meta.fields
+        return context
+
+# def list_students(request):
+#     students = [student.__dict__ for student in Student.objects.all()]
+#     fields = Student._meta.fields
+#     return render(
+#         request,
+#         'student_list_view.html',
+#         {
+#             'students': students,
+#             'fields': fields
+#         }
+#     )
 
 
 # class StudentListView(ListView):

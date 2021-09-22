@@ -105,6 +105,10 @@ TEMPLATES = [
             ],
         },
     },
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [os.path.join(BASE_DIR, 'django_efremov', 'templates')]
+    }
 ]
 
 WSGI_APPLICATION = 'django_efremov.wsgi.application'

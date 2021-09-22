@@ -28,7 +28,7 @@ from .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='index'),
+    path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('contact_us', contact_us, name='contact-us'),
     path('', include('groups.urls')),
     path('', include('service_apps.urls')),
