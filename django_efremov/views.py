@@ -1,6 +1,6 @@
 from time import sleep
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 # from django.views.generic import ListView
 from django.contrib import messages
 
@@ -30,6 +30,13 @@ def contact_us(request):
         form = ContactUS()
         return render(request, 'contactUS.html', {'form': form})
 
+
+def handler404(request, *args, **argv):
+    return render(request, '404.html')
+
+
+def handler500(request, *args, **argv):
+    return render(request, '500.html')
 
 # def model_pretty_viewer(query):
 #     return '<br/>'.join(str(q) for q in query)

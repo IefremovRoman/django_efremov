@@ -13,6 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+# from django.core.exceptions import
+# from django.http import HttpResponse
+# from django.test import SimpleTestCase, override_settings
+from django.views.generic.base import TemplateView
+
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
@@ -30,7 +36,15 @@ urlpatterns = [
     path('', include('teachers.urls'))
 ]
 
+
+handler404 = 'django_efremov.views.handler404'
+handler500 = 'django_efremov.views.handler500'
+
+
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)), ] + urlpatterns
+
+    urlpatterns.append(path(r'tests_error500/', TemplateView.as_view(template_name='500.html'), name='test500'))
+    urlpatterns.append(path(r'tests_error500/', TemplateView.as_view(template_name='404.html'), name='test404'))

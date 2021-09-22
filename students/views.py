@@ -15,15 +15,13 @@ faker = Faker(locale)
 
 def model_pretty_viewer(query):
     return '<br/>'.join(str(q) for q in query)
-    # return '<br/>'.join(map(str, query)) 
+    # return '<br/>'.join(map(str, query))
 
 
 # Viewers
 def list_students(request):
     students = [student.__dict__ for student in Student.objects.all()]
     fields = Student._meta.fields
-    # output = model_pretty_viewer(student_list)
-    # breakpoint()
     return render(
         request,
         'student_list_view.html',
