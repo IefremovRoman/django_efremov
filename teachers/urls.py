@@ -17,15 +17,22 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 
-from .views import *
+from .views import (TeacherListView,
+                    get_teacher,
+                    create_teacher,
+                    edit_teacher,
+                    delete_teacher,
+                    generate_teacher,
+                    generate_teachers)
 
+app_name = 'teachers'
 urlpatterns = [
-    # path('students/', StudentListView.as_view()),
-    path('teachers/', list_teachers, name='list-teachers'),
-    path('teacher/<int:teacher_id>', get_teacher, name='get-teacher'),
-    path('create_teacher', create_teacher, name='create-teacher'),
-    path('edit_teacher/<int:teacher_id>', edit_teacher, name='edit-teacher'),
-    path('delete_teacher/<int:teacher_id>', delete_teacher, name='delete-teacher'),
-    path('generate_teacher/', generate_teacher, name='generate-teacher'),
-    path('generate_teacher/<int:qty>', generate_teachers, name='generate-teachers')
+    path('teachers/', TeacherListView.as_view(), name='list'),
+    # path('teachers/', list_teachers, name='list-teachers'),
+    path('teacher/<int:teacher_id>', get_teacher, name='get'),
+    path('create_teacher', create_teacher, name='create'),
+    path('edit_teacher/<int:teacher_id>', edit_teacher, name='edit'),
+    path('delete_teacher/<int:teacher_id>', delete_teacher, name='delete'),
+    path('generate_teacher/', generate_teacher, name='generate'),
+    path('generate_teacher/<int:qty>', generate_teachers, name='multi-generate')
 ]

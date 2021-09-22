@@ -32,8 +32,8 @@ urlpatterns = [
     path('contact_us', contact_us, name='contact-us'),
     path('', include('groups.urls')),
     path('', include('service_apps.urls')),
-    path('', include('students.urls')),
-    path('', include('teachers.urls'))
+    path('', include('students.urls', namespace='students')),
+    path('', include('teachers.urls', namespace='teachers'))
 ]
 
 

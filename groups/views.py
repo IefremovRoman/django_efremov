@@ -22,6 +22,7 @@ def model_pretty_viewer(query):
 
 # Viewers
 def list_groups(request):
+    # breakpoint()
     group_list = [group.__dict__ for group in Group.objects.all()]
     teachers_id = [group.get('teacher_id_id') for group in group_list]
     teacher_list = [Teacher.objects.filter(id=t_id).values()[0] for t_id in teachers_id]

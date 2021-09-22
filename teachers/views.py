@@ -13,6 +13,8 @@ from faker import Faker
 from .models import Teacher
 from .forms import TeacherForm
 
+from django_efremov.views import PersonListView
+
 # Help funcitons
 locale = 'uk_UA'
 faker = Faker(locale)
@@ -50,18 +52,27 @@ def teachers(request):
 
 
 # Viewers
-def list_teachers(request):
-    teacher_list = [teacher.__dict__ for teacher in Teacher.objects.all()]
-    fields = Teacher._meta.fields
-    # output = model_pretty_viewer(teacher_list)
-    return render(
-                    request,
-                    'teacher_list_view.html',
-                    {
-                        'teachers': teacher_list,
-                        'fields': fields
-                    }
-                )
+class TeacherListView(PersonListView):
+    model = Teacher
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header'] = 'teacher'
+        context['fields'] = Teacher._meta.fields
+        return context
+
+# def list_teachers(request):
+#     teacher_list = [teacher.__dict__ for teacher in Teacher.objects.all()]
+#     fields = Teacher._meta.fields
+#     # output = model_pretty_viewer(teacher_list)
+#     return render(
+#                     request,
+#                     'teacher_list_view.html',
+#                     {
+#                         'teachers': teacher_list,
+#                         'fields': fields
+#                     }
+#                 )
 
 
 def get_teacher(request, teacher_id):

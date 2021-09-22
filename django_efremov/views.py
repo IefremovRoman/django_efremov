@@ -8,7 +8,8 @@ from .tasks import contact_us_send_mail
 
 
 class PersonListView(ListView):
-    template_name = "service_list.html"
+    # template_name = "view_list.html"
+    pass
 
 def contact_us(request):
     if request.method == 'POST':

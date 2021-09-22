@@ -107,7 +107,11 @@ TEMPLATES = [
     },
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [os.path.join(BASE_DIR, 'django_efremov', 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'django_efremov', 'templates')],
+        "APP_DIRS": True,
+        # "OPTIONS": {
+        #     "match_extension": ".jinja",
+        # }
     }
 ]
 
