@@ -28,7 +28,7 @@ class Command(BaseCommand):
             student = Student(
                                 first_name=faker.first_name(),
                                 last_name=faker.last_name(),
-                                age=faker.random_int(min=30, max=100),
+                                age=faker.random_int(min=17, max=30),
                                 phone=f'+38000{faker.msisdn()[0:7]}',
                                 group_id=choice(groups)
                             )
