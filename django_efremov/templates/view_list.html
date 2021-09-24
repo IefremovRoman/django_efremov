@@ -23,6 +23,7 @@
                     {% endif %}
                 {% endfor %}
                 <td>
+                    {% set app = {{ header }} %}
                     <a href="{% url 'students:edit' person.id%}">Edit</a>
                 </td>
                 <td>

@@ -69,10 +69,10 @@
                                 {% endif %}
                             {% endfor %}
                                 <td>
-                                    <a href="{% url 'edit-student' student.id %}">Edit</a>
+                                    <a href="{% url 'students:edit' student.id %}">Edit</a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'delete-student' student.id %}">Delete</a>
+                                    <a href="{% url 'students:delete' student.id %}">Delete</a>
                                 </td>
                         </tr>
                     {% endfor %}

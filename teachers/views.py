@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from django import forms
 from django.views.generic import ListView
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import View, ListView, FormView, CreateView, UpdateView, DeleteView, RedirectView
 
 from faker import Faker
 
@@ -85,32 +87,46 @@ def get_teacher(request, teacher_id):
     return redirect('list-teachers')
 
 
-def create_teacher(request):
-    
-    if request.method == 'POST':
-        form = TeacherForm(request.POST)
-        if form.is_valid():
-            if Teacher.objects.filter(**form.cleaned_data).exists():
-                # raise forms.ValidationError('This data is doubling!')
-                messages.error(request, 'This data is doubling!')
-                return redirect('create-teacher')
-                
-            else:
-                Teacher(**form.cleaned_data).save()
-                return redirect('list-teachers')
+class TeacherCreateView(CreateView, SuccessMessageMixin):
+    template_name = 'teacher_create_form.html'
+    form_class = TeacherForm
 
+    def form_valid(self, form):
+        if Teacher.objects.filter(**form.cleaned_data).exists():
+            return redirect('teacher:create')
         else:
-            messages.error(request, 'Invalid phone format! Please, try again.')
-            return redirect('create-teacher')
+            Teacher(**form.cleaned_data).save()
+            return redirect('teachers:list')
 
-    elif request.method == 'GET':
-        form = TeacherForm()
-    return render(
-                    request,
-                    'teacher_create_form.html',
-                    {
-                        'form': form,
-                    })
+    def form_invalid(self, form):
+        return redirect('teachers:create')
+
+# def create_teacher(request):
+#
+#     if request.method == 'POST':
+#         form = TeacherForm(request.POST)
+#         if form.is_valid():
+#             if Teacher.objects.filter(**form.cleaned_data).exists():
+#                 # raise forms.ValidationError('This data is doubling!')
+#                 messages.error(request, 'This data is doubling!')
+#                 return redirect('create-teacher')
+#
+#             else:
+#                 Teacher(**form.cleaned_data).save()
+#                 return redirect('list-teachers')
+#
+#         else:
+#             messages.error(request, 'Invalid phone format! Please, try again.')
+#             return redirect('create-teacher')
+#
+#     elif request.method == 'GET':
+#         form = TeacherForm()
+#     return render(
+#                     request,
+#                     'teacher_create_form.html',
+#                     {
+#                         'form': form,
+#                     })
 
 
 def edit_teacher(request, teacher_id):
