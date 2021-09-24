@@ -8,7 +8,8 @@ from students.models import Student
 from groups.models import Group
 
 
-faker = Faker()
+locale = 'uk_UA'
+faker = Faker(locale)
 
 
 class Command(BaseCommand):

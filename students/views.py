@@ -15,15 +15,6 @@ from .forms import StudentForm
 
 from django_efremov.views import PersonListView
 
-# Help funcitons
-locale = 'uk_UA'
-faker = Faker(locale)
-
-
-def model_pretty_viewer(query):
-    return '<br/>'.join(str(q) for q in query)
-    # return '<br/>'.join(map(str, query))
-
 
 # Viewers
 class StudentListView(PersonListView, View):
@@ -47,72 +38,13 @@ class StudentListView(PersonListView, View):
                 'fields': Student._meta.fields
             })
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['header'] = 'student'
-    #     context['fields'] = Student._meta.fields
-    #     return context
 
-
-# def list_students(request):
-#     students = [student.__dict__ for student in Student.objects.all()]
-#     fields = Student._meta.fields
-#     return render(
-#         request,
-#         'student_list_view.html',
-#         {
-#             'students': students,
-#             'fields': fields
-#         }
-#     )
-
-####
-# def get_student(request, student_id):
-#     if student_id:
-#         student = Student.objects.filter(id=student_id)
-#         # fields = Student._meta.fields
-#         output = model_pretty_viewer(student)
-#         return HttpResponse(output)
-#
-#     return redirect('list-students')
-####
-
-# def create_student(request):
-#     if request.method == 'POST':
-#         form = StudentForm(request.POST)
-#         if form.is_valid():
-#             if Student.objects.filter(**form.cleaned_data).exists():
-#                 # raise forms.ValidationError('This data is doubling!')
-#                 messages.error(request, 'This data is doubling!')
-#                 return redirect('create-student')
-#
-#             else:
-#                 Student(**form.cleaned_data).save()
-#                 return redirect('list-students')
-#
-#         else:
-#             messages.error(request, 'Invalid phone format! Please, try again.')
-#             return redirect('create-student')
-#
-#     elif request.method == 'GET':
-#         form = StudentForm()
-#     return render(
-#         request,
-#         'student_create_form.html',
-#         {
-#             'form': form,
-#         })
 class StudentCreateView(CreateView, SuccessMessageMixin):
     template_name = 'student_create_form.html'
     form_class = StudentForm
 
     def form_valid(self, form):
         if Student.objects.filter(**form.cleaned_data).exists():
-            # raise forms.ValidationError('This data is doubling!')
-            #     messages.error(request, 'This data is doubling!')
-            #     self.get_context_data(('success_message', 123))
-            #     context = self.get_context_data()
-            #     context.update({'success_message': 123})
             return redirect('students:create')
         else:
             Student(**form.cleaned_data).save()
@@ -142,35 +74,6 @@ class StudentUpdateView(UpdateView):
         return redirect('students:edit')
 
 
-# def edit_student(request, student_id):
-#     if request.method == 'POST':
-#         form = StudentForm(request.POST)
-#         if form.is_valid():
-#             Student.objects.update_or_create(
-#                                             defaults=form.cleaned_data,
-#                                             id=student_id)
-#             return redirect('list-students')
-#
-#         else:
-#             messages.error(request, 'Invalid phone format! Please, try again.')
-#             return redirect('edit-students')
-#
-#     elif request.method == 'GET':
-#         student = Student.objects.filter(id=student_id).first()
-#         form = StudentForm(instance=student)
-#
-#         return render(
-#             request,
-#             'student_edit_form.html',
-#             {
-#                 'form': form,
-#                 'student_id': student_id
-#             })
-#
-#     else:
-#         return HttpResponse('Method not registered')
-
-
 class StudentDeleteView(DeleteView):
     model = Student
     success_url = reverse_lazy('students:list')
@@ -191,6 +94,6 @@ class StudentGenerateView(View):
 
 class StudentMultiGenerateView(View):
 
-    def get(self, request, qty=100, **kwargs):
+    def get(self, request, **kwargs):
         call_command('generate_students')
         return redirect('students:list')
