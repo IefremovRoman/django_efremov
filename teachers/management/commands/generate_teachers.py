@@ -3,12 +3,12 @@ from random import choice, randint
 from string import ascii_uppercase
 
 from django.core.management.base import BaseCommand
+from django.core.management import call_command
 
 from faker import Faker
 
 from teachers.models import Teacher
 from groups.models import Group
-from students.models import Student
 
 locale = 'uk_UA'
 faker = Faker(locale)
@@ -49,14 +49,7 @@ class Command(BaseCommand):
                             teacher_id=teacher
             )
             group.save()
-            for s in range(students_qnt):
-                student = Student(
-                                    first_name=faker.first_name(),
-                                    last_name=faker.last_name(),
-                                    age=faker.random_int(min=17, max=30),
-                                    phone=f'+38000{faker.msisdn()[0:7]}',
-                                    group_id=group,
-                )
-                student.save()
+            call_command('generate_students', total=students_qnt, group_id=group.id)
+
         message = f'{total} teacher(s) successfully created!'
         self.stdout.write(self.style.SUCCESS(message))

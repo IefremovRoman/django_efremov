@@ -8,8 +8,6 @@ from django.core.paginator import Paginator
 from django.core.management import call_command
 from django.views.generic import View, ListView, FormView, CreateView, UpdateView, DeleteView
 
-from faker import Faker
-
 from .models import Student
 from .forms import StudentForm
 
@@ -29,11 +27,16 @@ class StudentListView(PersonListView, View):
             students = Student.objects.filter(id=student_id).all()
         else:
             students = Student.objects.all()
+        students = students.values()
+        paginator = Paginator(students, 18)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         return render(
             request,
             self.template_name,
             {
-                'students': students,
+                'page_obj': page_obj,
+                # 'students': students,
                 'header': 'student',
                 'fields': Student._meta.fields
             })
