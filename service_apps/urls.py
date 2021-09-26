@@ -17,10 +17,10 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 
-from .views import *
+from .views import CurrencyView
 
 urlpatterns = [
-    path('currencies/', list_currencies, name='list-currencies'),
+    path('currencies/', CurrencyView.as_view(), name='list-currencies'),
     # path('group/<int:group_id>', get_group, name='get-group'),
     # path('create_group', create_group, name='create-group'),
     # path('edit_group/<int:group_id>', edit_group, name='edit-group'),
