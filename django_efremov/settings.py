@@ -50,7 +50,7 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 # SECURITY WARNING: keep the secret key used in production secret!
 
 
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

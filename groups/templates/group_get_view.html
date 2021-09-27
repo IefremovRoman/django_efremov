@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Groups</h1>
+    <div>
+        {#Group table#}
+        <div>
+        <h3>
+            <span>Group</span>
+            <span>{{ group.title }}</span>
+        </h3>
+            <table class="table table-dark">
+                <tr>
+                {% for k,v in group.items %}
+                    {% if k != '_state' and k != 'teacher_id_id' %}
+                        <td>
+                            <p>{{ k.title }} : {{ v }} </p>
+                        </td>
+                        <td style="width: 2px"></td>
+                    {% endif %}
+                {% endfor %}
+                    <td>
+                        <a href="{% url 'groups:edit' group.id %}">Edit</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'groups:delete' group.id %}">Delete</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="padding-bottom: 20px"></div>
+        {#Teacher table#}
+        <table>
+            <tr>
+                <td><h3>Curator name : {{ teacher.first_name }} {{ teacher.last_name }}</h3></td>
+                <td style="width: 15px"></td>
+                <td><h3>Id : {{ teacher.id }}</h3></td>
+                <td style="width: 15px"></td>
+                <td><h3>Phone number : {{ teacher.phone }}</h3></td>
+            </tr>
+        </table>
+        {#Student table#}
+        <div>
+        <h3>Students</h3>
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        {% for field in student_fields %}
+                            {% if field.name != 'group_id_id' %}
+                                <th align="left">{{ field.name.title }}</th>
+                            {% endif %}
+                        {% endfor %}
+                        <th align="left">Edit action</th>
+                        <th align="left">Delete action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for obj in page_obj.object_list %}
+                    <tr>
+                        {% for k,v in obj.items %}
+                            {% if k != 'group_id_id' %}
+                                <td>{{ v }}</td>
+                            {% else %}
+                                <td><a href="{% url 'groups:get' v %}">{{ v }}</a></td>
+                            {% endif %}
+                        {% endfor %}
+                        <td>
+                            <a href="{% url 'students:edit' obj.id%}">Edit</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'students:delete' obj.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        </div>
+    <div style="border-top: 1px solid darkslategrey;"></div>
+    </div>
+{% endblock %}

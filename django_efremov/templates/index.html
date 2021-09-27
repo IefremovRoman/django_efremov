@@ -14,10 +14,10 @@
 	<br><a href="{% url 'students:generate' %}" title="By this link it generates 1 new random student">Add 1 student</a>
 	<br><a href="{% url 'students:multi-generate' 100 %}" title="By this link you can give to a 'count' parameter some 0 to 100 number and it generates new students, 100 by default">Generate n students</a>
 	<br><h2>Groups' section</h2>
-	<br><a href="{% url 'list-groups' %}" title="This link shows all groups">List</a>
-	<br><a href="{% url 'get-group' 1 %}" title="This link shows specified group by id">Get</a>
-	<br><a href="{% url 'create-group' %}" title="This link allows to create a group">Create</a>
-	<br><a href="{% url 'edit-group' 1 %}" title="This link allows to edit the group by id">Edit</a>
+	<br><a href="{% url 'groups:list' %}" title="This link shows all groups">List</a>
+	<br><a href="{% url 'groups:get' 1 %}" title="This link shows specified group by id">Get</a>
+	<br><a href="{% url 'groups:create' %}" title="This link allows to create a group">Create</a>
+	<br><a href="{% url 'groups:edit' 1 %}" title="This link allows to edit the group by id">Edit</a>
 	<br><h2>Teachers' section</h2>
 	<br><a href="{% url 'teachers:list' %}" title="This link shows all teachers">List</a>
 	<br><a href="{% url 'teachers:get' 1 %}" title="This link shows specified teacher by id">Get</a>

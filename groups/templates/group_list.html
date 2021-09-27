@@ -13,21 +13,26 @@
                 </tr>
             </thead>
             <tbody>
-                {% for obj in page_obj.object_list %}
+                {% for obj in object_list.values %}
                     <tr>
-
                         {% for k,v in obj.items %}
-                            {% if k != 'group_id_id' %}
-                                <td>{{ v }}</td>
-                            {% else %}
+                            {% if k == 'id' %}
                                 <td><a href="{% url 'groups:get' v %}">{{ v }}</a></td>
+                            {% else %}
+                                {% if k != 'teacher_id_id' %}
+                                    <td>{{ v }}</td>
+                                {% else %}
+                                    <td><a href="{% url 'teachers:get' v %}">{{ v }}</a></td>
+                                {% endif %}
                             {% endif %}
+
+
                         {% endfor %}
                         <td>
-                            <a href="{% url 'teachers:edit' obj.id%}">Edit</a>
+                            <a href="{% url 'groups:edit' obj.id%}">Edit</a>
                         </td>
                         <td>
-                            <a href="{% url 'teachers:delete' obj.id %}">Delete</a>
+                            <a href="{% url 'groups:delete' obj.id %}">Delete</a>
                         </td>
                     </tr>
                 {% endfor %}

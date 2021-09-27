@@ -15,12 +15,11 @@
             <tbody>
                 {% for obj in page_obj.object_list %}
                     <tr>
-
                         {% for k,v in obj.items %}
                             {% if k != 'group_id_id' %}
                                 <td>{{ v }}</td>
                             {% else %}
-                                <td><a href="{% url 'get-group' v %}">{{ v }}</a></td>
+                                <td><a href="{% url 'groups:get' v %}">{{ v }}</a></td>
                             {% endif %}
                         {% endfor %}
                         <td>
