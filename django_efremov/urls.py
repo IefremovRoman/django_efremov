@@ -17,14 +17,13 @@ Including another URLconf
 # from django.core.exceptions import
 # from django.http import HttpResponse
 # from django.test import SimpleTestCase, override_settings
-from django.views.generic.base import TemplateView
 
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic.base import TemplateView
 
 from .views import *
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,15 +35,22 @@ urlpatterns = [
     path('', include('teachers.urls', namespace='teachers'))
 ]
 
-
 handler404 = 'django_efremov.views.handler404'
 handler500 = 'django_efremov.views.handler500'
 
-
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)), ] + urlpatterns
 
-    urlpatterns.append(path(r'tests_error500/', TemplateView.as_view(template_name='500.html'), name='test500'))
-    urlpatterns.append(path(r'tests_error500/', TemplateView.as_view(template_name='404.html'), name='test404'))
+    urlpatterns = [path('__debug__/', include(debug_toolbar.urls)), ] + urlpatterns
+
+    urlpatterns.append(path(
+        r'tests_error500/',
+        TemplateView.as_view(template_name='500.html'),
+        name='test500')
+    )
+
+    urlpatterns.append(path(
+        r'tests_error404/',
+        TemplateView.as_view(template_name='404.html'),
+        name='test404')
+    )
