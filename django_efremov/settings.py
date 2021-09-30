@@ -166,3 +166,5 @@ INTERNAL_IPS = [
 AUTHENTICATION_BACKENDS = (
     ('django.contrib.auth.backends.ModelBackend'),
 )
+
+CELERY_BROKER_URL = 'amqp://localhost'

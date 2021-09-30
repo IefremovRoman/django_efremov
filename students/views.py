@@ -88,7 +88,7 @@ def edit_student(request, student_id):
         
         else:
             messages.error(request, 'Invalid phone format! Please, try again.')
-            return redirect('edit-students')
+            return redirect('edit-student', student_id)
 
     elif request.method == 'GET':
         student = Student.objects.filter(id=student_id).first()
