@@ -4,7 +4,7 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - flake8 --ignore=F403, F405 --exclude=.git,*migrations*,settings.py, django_efremov/views.py, django_efremov/middleware.py --max-line-length=99
+  - flake8 --ignore=F403, F405 --exclude=.git,*migrations*,settings.py --max-line-length=99
   - python manage.py validate_templates
   - python manage.py check
   - python manage.py makemigrations --check --dry-run
