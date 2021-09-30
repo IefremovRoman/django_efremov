@@ -27,8 +27,9 @@ def list_students(request):
                     'student_list_view.html',
                     {
                         'students': student_list,
-                        'fields': fields}
-                        )
+                        'fields': fields
+                    }
+                )
 # class StudentListView(ListView):
 #   model = Student
 #   template_name  = "list_view.html"
@@ -52,13 +53,15 @@ def create_student(request):
             if Student.objects.filter(**form.cleaned_data).exists():
                 # raise forms.ValidationError('This data is doubling!')
                 messages.error(request, 'This data is doubling!')
-                # return render(request, 'operation_status.html', operation_status)
                 return redirect('create-student')
                 
             else:
-                Student.objects.create(**form.cleaned_data)
-                # return render(request, 'operation_status.html', operation_status)
+                Student(**form.cleaned_data).save()
                 return redirect('list-students')
+        
+        else:
+            messages.error(request, 'Invalid phone format! Please, try again.')
+            return redirect('create-student')
 
     elif request.method == 'GET':
         form = StudentForm()
@@ -82,7 +85,12 @@ def edit_student(request, student_id):
                                             defaults=form.cleaned_data,
                                             id=student_id)
             return redirect('list-students')
-    else:
+        
+        else:
+            messages.error(request, 'Invalid phone format! Please, try again.')
+            return redirect('edit-student', student_id)
+
+    elif request.method == 'GET':
         student = Student.objects.filter(id=student_id).first()
         form = StudentForm(instance=student)
 
@@ -93,6 +101,9 @@ def edit_student(request, student_id):
                             'form': form,
                             'student_id': student_id
                         })
+    
+    else:
+        return HttpResponse('Method not registered')
 
 
 def delete_student(request, student_id):

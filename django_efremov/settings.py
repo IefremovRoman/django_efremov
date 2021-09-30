@@ -32,9 +32,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'groups',
-    'students',
-    'teachers',
+    'groups.apps.GroupsConfig',
+    'students.apps.StudentsConfig',
+    'teachers.apps.TeachersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    # 'students.middleware.simple_middleware',
+    'students.middleware.LogMiddleware',
 ]
 
 ROOT_URLCONF = 'django_efremov.urls'
@@ -133,6 +133,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'django_efremov', 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Debug toolbar config
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
@@ -140,3 +141,5 @@ INTERNAL_IPS = [
 AUTHENTICATION_BACKENDS = (
     ('django.contrib.auth.backends.ModelBackend'),
 )
+
+CELERY_BROKER_URL = 'amqp://localhost'

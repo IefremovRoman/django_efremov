@@ -6,15 +6,17 @@ phone_valitation_message = "Phone number must be entered in the format: '+999999
                             Up to 15 digits allowed."
 
 class Student(models.Model):
-    phone_regex = RegexValidator(
-                                    regex=r'^\+?1?\d{9,15}$',
-                                    message=phone_valitation_message
-                                )
     first_name = models.CharField(max_length=24)
     last_name = models.CharField(max_length=24)
     age = models.IntegerField(default=0)
     phone = models.CharField(
-                                validators=[phone_regex],
+                                validators=[
+                                                RegexValidator(
+                                                                regex=r'^\+?1?\d{12,15}$',
+                                                                message=phone_valitation_message,
+                                                                code='invalid'
+                                                                )
+                                            ],
                                 default='+00000000000000',
                                 max_length=15,
                                 blank=True
@@ -26,3 +28,10 @@ class Student(models.Model):
                     {self.last_name} \
                     {self.age} \
                     {self.phone}'
+
+
+class Logger(models.Model):
+    method = models.CharField(max_length=12)
+    path = models.CharField(max_length=50)
+    execution_time = models.FloatField(null=False)
+    created = models.DateTimeField(auto_now_add=True)

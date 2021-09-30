@@ -27,7 +27,8 @@ def list_groups(request):
                     'group_list_view.html',
                     {
                         'groups': group_list,
-                        'fields': fields}
+                        'fields': fields
+                    }
                 )
 # def list_groups(request):
 #     group = Group.objects.all()
@@ -52,13 +53,15 @@ def create_group(request):
             if Group.objects.filter(**form.cleaned_data).exists():
                 # raise forms.ValidationError('This data is doubling!')
                 messages.error(request, 'This data is doubling!')
-                # return render(request, 'operation_status.html', operation_status)
                 return redirect('create-group')
                 
             else:
-                Group.objects.create(**form.cleaned_data)
-                # return render(request, 'operation_status.html', operation_status)
+                Group(**form.cleaned_data).save()
                 return redirect('list-groups')
+        
+        else:
+            messages.error(request, 'Start or finish year is exceeded limits! Please, try again.')
+            return redirect('create-group')
 
     elif request.method == 'GET':
         form = GroupForm()
@@ -82,7 +85,12 @@ def edit_group(request, group_id):
                                             defaults=form.cleaned_data,
                                             id=group_id)
             return redirect('list-groups')
-    else:
+        
+        else:
+            messages.error(request, 'Start or finish year is exceeded limits! Please, try again.')
+            return redirect('edit-group', group_id)
+    
+    elif request.method == 'GET':
         group = Group.objects.filter(id=group_id).first()
         form = GroupForm(instance=group)
 
@@ -93,6 +101,9 @@ def edit_group(request, group_id):
                             'form': form,
                             'group_id': group_id
                         })
+    
+    else:
+        return HttpResponse('Method not registered')
 
 
 def delete_group(request, group_id):

@@ -15,15 +15,13 @@
       </div>
     {% endfor %}
     </div>
-    
+    <input class="text" type="submit" value="Submit">
+  </form>
     {% if messages %}
       {% for message in messages %}
         <h2 class="errorMsg">{{ message }}</h2>
       {% endfor %}
     {% endif %}
-    
-    <input class="text" type="submit" value="Submit">
-  </form>
   <br><a class="text" href="/">Back to Home</a>
   <br><a class="text" href="/students">Student list</a>
   <br><a class="text" href="/admin">Admin site</a>
