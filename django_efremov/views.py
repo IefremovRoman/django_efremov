@@ -1,29 +1,32 @@
-from django.views.generic import ListView
-from django.shortcuts import render
 from django.contrib import messages
+from django.shortcuts import redirect, render
+from django.views.generic import ListView
 
 from .forms import ContactUS
 from .tasks import contact_us_send_mail
-#, delayed_redirect
+
+
+# , delayed_redirect
 
 
 class PersonListView(ListView):
     # template_name = "view_list.html"
     pass
 
+
 def contact_us(request):
     if request.method == 'POST':
         form = ContactUS(request.POST)
         if form.is_valid():
             contact_us_send_mail.delay(
-                                        subject=form.cleaned_data.get('subject'),
-                                        message=form.cleaned_data.get('message'),
-                                        from_email=form.cleaned_data.get('email_from'),
-                                        recipient_list=[
-                                                        'danepe6714@sicmag.com',
-                                                        ]
-                                        )
-            #'vitalik1996@gmail.com'
+                subject=form.cleaned_data.get('subject'),
+                message=form.cleaned_data.get('message'),
+                from_email=form.cleaned_data.get('email_from'),
+                recipient_list=[
+                    'danepe6714@sicmag.com',
+                ]
+            )
+            # 'vitalik1996@gmail.com'
             messages.success(request, 'Your message has been sent! Thanks for you request!')
             return redirect('contact-us')
     elif request.method == 'GET':
@@ -63,7 +66,7 @@ def handler500(request, *args, **argv):
 
 # def create_factory(FormClass, model):
 # 	def create(request):
-	    
+
 # 	    if request.method == 'POST':
 # 	        form = FormClass(request.POST)
 # 	        if form.is_valid():
@@ -75,7 +78,7 @@ def handler500(request, *args, **argv):
 # 	                    'app_list': 'students/'
 # 	                    }
 # 	                return render(request, 'operation_status.html', operation_status)
-	                
+
 # 	            else:
 # 	                Student.objects.create(**form.cleaned_data)
 # 	                operation_status = {
