@@ -1,29 +1,82 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Groups</h2>
-<table >
-	<tr>
-	    {% for field in fields %}
-	        <th>{{ field.name.title }}</th>
-	    {% endfor %}
-	    <th>Edit action</th>
-	    <th>Delete action</th>
-	</tr>
-	{% for group in groups %}
-	<tr>
-		{% for k,v in group.items %}
-			{% if k != '_state' %}
-	        	<td>{{ v }}</td>
-	        {% endif %}
-	    {% endfor %}
-		<td>
-			<a href="{% url 'edit-group' group.id %}">Edit</a>
-		</td>
-	    <td>
-	    	<a href="{% url 'delete-group' group.id %}">Delete</a>
-	    </td>
-	</tr>
-	{% endfor %}
-</table>
+<h1>Groups</h1>
+    <div>
+    {% for group in groups %}
+        {#Group table#}
+        <div class="group-section">
+        <h3>
+            <span>Group</span>
+            <span> </span>
+            {% if tmpl_flg == 'get' %}
+                <span>{{ group.group.title }}</span>
+            {% else %}
+                <a href="{% url 'get-group' group.group.id %}"><span>{{ group.group.title }}</span></a>
+            {% endif %}
+        </h3>
+            <table>
+                <tr>
+                {% for k,v in group.group.items %}
+                    {% if k != '_state' and k != 'teacher_id_id' %}
+                        <td>
+                            <p>{{ k.title }} : {{ v }} </p>
+                        </td>
+                        <td style="width: 2px"></td>
+                    {% endif %}
+                {% endfor %}
+                    <td>
+                        <a href="{% url 'edit-group' group.group.id %}">Edit</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'delete-group' group.group.id %}">Delete</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="padding-bottom: 20px"></div>
+        {#Teacher table#}
+        <table>
+            <tr>
+                <td><h3>Curator name : {{ group.teacher.first_name }} {{ group.teacher.last_name }}</h3></td>
+                <td style="width: 15px"></td>
+                <td><h3>Id : {{ group.teacher.id }}</h3></td>
+                <td style="width: 15px"></td>
+                <td><h3>Phone number : {{ group.teacher.phone }}</h3></td>
+            </tr>
+        </table>
+        {#Student table#}
+        <div class="student-section">
+        <h3>Students</h3>
+            <table style="border-spacing: 5px;" cellpadding="5">
+                <tr>
+                    {% for field in student_fields %}
+                        {% if field.name != 'group_id' %}
+                            <th align="left">{{ field.name.title }}</th>
+                        {% endif %}
+                    {% endfor %}
+                    <th align="left">Edit action</th>
+                    <th align="left">Delete action</th>
+                </tr>
+                {% for student in group.students %}
+                    <tr>
+                        {% for k,v in student.items %}
+                            {% if k != 'group_id_id' %}
+                                <td>{{ v }}</td>
+                            {% endif %}
+                        {% endfor %}
+                            <td>
+                                <a href="{% url 'edit-student' student.id %}">Edit</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'delete-student' student.id %}">Delete</a>
+                            </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <h4>Total students in group: {{ group.group_len }}</h4>
+    <div style="border-top: 1px solid darkslategrey;"></div>
+    {% endfor %}
+    </div>
 {% endblock %}

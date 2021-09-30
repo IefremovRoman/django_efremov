@@ -17,7 +17,7 @@ class Teacher(models.Model):
                                                             message=phone_valitation_message,
                                                             code='invalid'
                                                             )
-                            ],
+                                        ],
                             default='+00000000000000',
                             max_length=15,
                             blank=True
@@ -30,3 +30,7 @@ class Teacher(models.Model):
                     {self.age} \
                     {self.subject}\
                     {self.phone}'
+
+    # def __dict__(self):
+    #     return dict(id=self.id, first_name=self.first_name, last_name=self.last_name, age=self.age,
+    #                 subject=self.subject, phone=self.phone)

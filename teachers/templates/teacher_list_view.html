@@ -2,13 +2,13 @@
 
 {% block content %}
 <h2>Teachers</h2>
-<table >
+<table cellpadding="5">
 	<tr>
 	    {% for field in fields %}
-	        <th>{{ field.name.title }}</th>
+	        <th align="left">{{ field.name.title }}</th>
 	    {% endfor %}
-	    <th>Edit action</th>
-	    <th>Delete action</th>
+	    <th align="left">Edit action</th>
+	    <th align="left">Delete action</th>
 	</tr>
 	{% for teacher in teachers %}
 	<tr>
