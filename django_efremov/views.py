@@ -1,13 +1,38 @@
-from django.shortcuts import render
-from django.views.generic import ListView
-from django.http import HttpResponse, HttpResponseRedirect
+from time import sleep
 
+from django.shortcuts import render, redirect
+# from django.views.generic import ListView
+from django.contrib import messages
+
+from .forms import ContactUS
+from .tasks import contact_us_send_mail#, delayed_redirect
 
 def index(request):
     return render(request, 'index.html')
 
-def model_pretty_viewer(query):
-    return '<br/>'.join(str(q) for q in query)
+
+def contact_us(request):
+    if request.method == 'POST':
+        form = ContactUS(request.POST)
+        if form.is_valid():
+            contact_us_send_mail.delay(
+                                        subject=form.cleaned_data.get('subject'),
+                                        message=form.cleaned_data.get('message'),
+                                        from_email=form.cleaned_data.get('email_from'),
+                                        recipient_list=[
+                                                        'danepe6714@sicmag.com',
+                                                        'vitalik1996@gmail.com'
+                                                        ]
+                                        )
+            messages.success(request, 'Your message has been sent! Thanks for you request!')
+            return redirect('contact-us')
+    elif request.method == 'GET':
+        form = ContactUS()
+        return render(request, 'contactUS.html', {'form': form})
+
+
+# def model_pretty_viewer(query):
+#     return '<br/>'.join(str(q) for q in query)
 
 
 # from django.urls import path

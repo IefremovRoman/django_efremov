@@ -22,7 +22,8 @@ from .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index),
+    path('', index, name='index'),
+    path('contact_us', contact_us, name='contact-us'),
     path('', include('groups.urls')),
     path('', include('students.urls')),
     path('', include('teachers.urls'))
