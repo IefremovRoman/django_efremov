@@ -1,17 +1,14 @@
-from django import forms
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
-from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import Paginator
 from django.core.management import call_command
-from django.views.generic import View, ListView, FormView, CreateView, UpdateView, DeleteView
-
-from .models import Teacher
-from .forms import TeacherForm
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, UpdateView, View
 
 from django_efremov.views import PersonListView
+
+from .forms import TeacherForm
+from .models import Teacher
 
 
 # Viewers
@@ -80,6 +77,7 @@ class TeacherUpdateView(UpdateView):
 class TeacherDeleteView(DeleteView):
     model = Teacher
     success_url = reverse_lazy('teachers:list')
+
     # template_name = 'teacher_confirm_delete.html'
 
     def get(self, *args, **kwargs):
@@ -100,7 +98,6 @@ class TeacherMultiGenerateView(View):
     def get(self, request, **kwargs):
         call_command('generate_teachers')
         return redirect('teachers:list')
-
 
 # def teachers(request):
 #     if request.method == 'GET':

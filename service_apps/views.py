@@ -3,7 +3,7 @@ import json
 from django.shortcuts import render
 from django.views.generic import View
 
-from .models import CurrencyEUR, CurrencyUSD, CurrencyRUB
+from .models import CurrencyEUR, CurrencyRUB, CurrencyUSD
 
 
 class CurrencyView(View):

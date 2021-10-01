@@ -1,8 +1,4 @@
-from django.db.models.signals import post_save, pre_save
-from django.dispatch import receiver
 
-from .models import Group
-from students.models import Student
 
 
 # @receiver(pre_save, sender=Student)
@@ -13,7 +9,6 @@ from students.models import Student
 # @receiver(pre_save, sender=Student)
 # def old_group(sender, **kwargs):
 #     return kwargs['instance'].group_id
-
 
 
 # @receiver(post_save, sender=Student)
@@ -32,7 +27,7 @@ from students.models import Student
 #                 new_group = Group.objects.filter(id=group_id).values()[0]
 #                 old_group.student_quantity = len(sender.objects.get(group_id=obj.group_id))
 #                 new_group.student_quantity = len(sender.objects.get(group_id=group_id))
-            # get('student_quantity')
+# get('student_quantity')
 
 
 # @receiver(pre_save, sender=Student)

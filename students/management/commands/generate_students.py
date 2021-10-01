@@ -4,9 +4,9 @@ from django.core.management.base import BaseCommand
 
 from faker import Faker
 
-from students.models import Student
 from groups.models import Group
 
+from students.models import Student
 
 locale = 'uk_UA'
 faker = Faker(locale)
@@ -24,15 +24,17 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # count = kwargs.get('total', 100)
         count = kwargs.get('total') if kwargs.get('total') else 100
-        group = Group.objects.get(id=kwargs.get('group_id')) if kwargs.get('group_id') else choice(Group.objects.all())
+        group = Group.objects.get(
+            id=kwargs.get('group_id')) if kwargs.get('group_id') else choice(
+            Group.objects.all())
         for i in range(count):
             student = Student(
-                                first_name=faker.first_name(),
-                                last_name=faker.last_name(),
-                                age=faker.random_int(min=17, max=30),
-                                phone=f'+38000{faker.msisdn()[0:7]}',
-                                group_id=group
-                            )
+                first_name=faker.first_name(),
+                last_name=faker.last_name(),
+                age=faker.random_int(min=17, max=30),
+                phone=f'+38000{faker.msisdn()[0:7]}',
+                group_id=group
+            )
             student.save()
 
         message = f'{count} student(s) successfully created!'

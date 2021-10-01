@@ -13,26 +13,24 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf import settings
-from django.contrib import admin
 from django.urls import path
 
 from .views import (
-    TeacherListView,
     TeacherCreateView,
-    TeacherUpdateView,
     TeacherDeleteView,
     TeacherGenerateView,
-    TeacherMultiGenerateView
-                    )
+    TeacherListView,
+    TeacherMultiGenerateView,
+    TeacherUpdateView
+)
 
 app_name = 'teachers'
 urlpatterns = [
-    path('teachers/',                       TeacherListView.as_view(),          name='list'),
-    path('teacher/<int:teacher_id>',        TeacherListView.as_view(),          name='get'),
-    path('create_teacher',                  TeacherCreateView.as_view(),        name='create'),
-    path('edit_teacher/<int:teacher_id>',   TeacherUpdateView.as_view(),        name='edit'),
-    path('delete_teacher/<int:pk>',         TeacherDeleteView.as_view(),        name='delete'),
-    path('generate_teacher/',               TeacherGenerateView.as_view(),      name='generate'),
-    path('generate_teachers/<int:qty>',     TeacherMultiGenerateView.as_view(), name='multi-generate')
+    path('teachers/', TeacherListView.as_view(), name='list'),
+    path('teacher/<int:teacher_id>', TeacherListView.as_view(), name='get'),
+    path('create_teacher', TeacherCreateView.as_view(), name='create'),
+    path('edit_teacher/<int:teacher_id>', TeacherUpdateView.as_view(), name='edit'),
+    path('delete_teacher/<int:pk>', TeacherDeleteView.as_view(), name='delete'),
+    path('generate_teacher/', TeacherGenerateView.as_view(), name='generate'),
+    path('generate_teachers/<int:qty>', TeacherMultiGenerateView.as_view(), name='multi-generate')
 ]

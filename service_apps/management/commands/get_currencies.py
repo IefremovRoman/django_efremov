@@ -1,8 +1,8 @@
-import requests
-
 from django.core.management.base import BaseCommand
 
-from service_apps.models import Currency, CurrencyEUR, CurrencyUSD, CurrencyRUB
+import requests
+
+from service_apps.models import CurrencyEUR, CurrencyRUB, CurrencyUSD
 
 CURRENCY_CODES = {
     'USD': 840,
@@ -48,13 +48,14 @@ class Command(BaseCommand):
         for cur in privat_json:
             currency_label = cur.get('ccy')
             if currency_label in UPDATED_CODES:
-                if currency_label == 'RUR': currency_label = 'RUB'
+                if currency_label == 'RUR':
+                    currency_label = 'RUB'
                 privat_data.update({currency_label: cur.get('buy')})
 
         usd_data = {b: v.get('USD') for b, v in zip(bank_key, [nbu_data, mono_data, privat_data])}
         eur_data = {b: v.get('EUR') for b, v in zip(bank_key, [nbu_data, mono_data, privat_data])}
         rub_data = {b: v.get('RUB') for b, v in zip(bank_key, [nbu_data, mono_data, privat_data])}
 
-        current_usd_currency = CurrencyUSD.objects.create(**usd_data)
-        current_eur_currency = CurrencyEUR.objects.create(**eur_data)
-        current_rub_currency = CurrencyRUB.objects.create(**rub_data)
+        CurrencyUSD.objects.create(**usd_data)
+        CurrencyEUR.objects.create(**eur_data)
+        CurrencyRUB.objects.create(**rub_data)

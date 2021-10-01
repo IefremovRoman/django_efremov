@@ -1,5 +1,5 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 from teachers.models import Teacher
 
@@ -22,10 +22,10 @@ class Group(models.Model):
         default=1)
 
     teacher_id = models.ForeignKey(
-                                    Teacher,
-                                    blank=True,
-                                    default=None,
-                                    on_delete=models.CASCADE)
+        Teacher,
+        blank=True,
+        default=None,
+        on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.id} \
@@ -40,4 +40,4 @@ class Group(models.Model):
     #         'id'
     #     }
 
-#{self.Teacher.objects.filter(id=self.teacher_id)}
+# {self.Teacher.objects.filter(id=self.teacher_id)}
