@@ -24,6 +24,7 @@ class StudentListView(PersonListView, View):
             students = Student.objects.filter(id=student_id).all()
         else:
             students = Student.objects.all()
+        
         students = students.values()
         paginator = Paginator(students, 18)
         page_number = request.GET.get('page')
