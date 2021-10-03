@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Student, Logger
+from .models import Logger, Student
 
 
 # Register your models here.
@@ -9,7 +9,13 @@ from .models import Student, Logger
 class StudentAdmin(admin.ModelAdmin):
     save_on_top = True
     list_per_page = 30
-    list_display = ("last_name", "first_name", "age", "phone", "group_name_and_id", "group_teacher")
+    list_display = (
+        "last_name",
+        "first_name",
+        "age",
+        "phone",
+        "group_name_and_id",
+        "group_teacher")
     list_filter = ("age", "first_name", "group_id")
     search_fields = ("last_name__startswith",)
 

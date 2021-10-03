@@ -9,6 +9,7 @@ from .models import Student
 # 					raise forms.ValidationError(str(category) + ' is already created')
 # 			return category
 
+
 class StudentForm(forms.ModelForm):
     # student_choice = forms.ModelChoiceField(queryset=Student.objects.all())
     class Meta:

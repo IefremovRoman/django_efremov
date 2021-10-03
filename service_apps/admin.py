@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import CurrencyRUB, CurrencyUSD, CurrencyEUR
+from .models import CurrencyEUR, CurrencyRUB, CurrencyUSD
 
 
 class CurrencyRegister(admin.ModelAdmin):

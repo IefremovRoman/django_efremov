@@ -15,7 +15,8 @@
 <body>
    
   <h2>Student edit form</h2>
-  <form action="{% url 'edit-student' student_id %}" method="post">
+  <form method="post">
+{#  action="{% url 'students:edit' student_id %}"#}
     {% csrf_token %}
     
     <div>
@@ -37,8 +38,6 @@
   <br><a class="text" href="/">Back to Home</a>
   <br><a class="text" href="/students">Student list</a>
   <br><a class="text" href="/admin">Admin site</a>
-</body>
-</html>
 
 <style type="text/css">
   a {
@@ -53,7 +52,7 @@
     font-family: Verdana, fantasy;
     font-weight: 200;
     font-size: large;
-    
+
   }
 
   .field_item {
@@ -65,4 +64,6 @@
     color: red;
   }
 </style>
+</body>
+</html>
 {% endblock %}

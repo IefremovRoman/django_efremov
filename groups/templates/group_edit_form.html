@@ -4,9 +4,9 @@
 <body>
    
   <h2>Group edit form</h2>
-  <form action="{% url 'edit-group' group_id %}" method="post">
+  <form method="post">
+{#  action="{% url 'groups:edit' group_id %}"#}
     {% csrf_token %}
-    
     <div>
     {% for field in form %}
       <div>

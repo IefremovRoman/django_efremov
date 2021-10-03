@@ -9,3 +9,5 @@ script:
   - python manage.py check
   - python manage.py makemigrations --check --dry-run
   - pip check
+
+#  --ignore=F403, F405 --exclude=.git,*migrations*,settings.py --max-line-length=99

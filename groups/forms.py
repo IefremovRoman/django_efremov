@@ -14,4 +14,3 @@ class GroupForm(forms.ModelForm):
     # 	if 1984 < start_year < 2021:
     # 		raise forms.ValidationError('Not valid start year. Put smth btwn 1984 and 2021')
     # 	return start_year
-
