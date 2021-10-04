@@ -1,15 +1,13 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView, View
 
-from students.models import Student
-
-from teachers.models import Teacher
-
-from .forms import GroupForm
 from .models import Group
+from teachers.models import Teacher
+from students.models import Student
+from .forms import GroupForm
 
 
 # Viewers

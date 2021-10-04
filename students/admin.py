@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Logger, Student
+from .models import Student, Logger
 
 
 # Register your models here.
