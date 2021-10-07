@@ -1,6 +1,9 @@
+from django.core.paginator import Paginator
 from django.contrib import messages
 from django.shortcuts import redirect, render
-from django.views.generic import ListView
+from django.urls import reverse
+from django.views.generic import CreateView, ListView
+
 
 from .forms import ContactUS
 from .tasks import contact_us_send_mail
@@ -10,8 +13,46 @@ from .tasks import contact_us_send_mail
 
 
 class PersonListView(ListView):
-    # template_name = "view_list.html"
+
+    def get(self, request, model, template_name, header=None, person_id=None, **kwargs):
+        if person_id:
+            persons = model.objects.filter(id=person_id).all()
+        else:
+            persons = model.objects.all()
+
+        persons = persons.order_by('id').values()
+        paginator = Paginator(persons, 18)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(
+            request,
+            template_name,
+            {
+                'page_obj': page_obj,
+                # 'teachers': teachers,
+                'header': header,
+                'fields': model._meta.fields
+            })
+
+
+class PersonCreateView(CreateView):
     pass
+#     def create_method(self, model, form, appname):
+#
+#         def get_success_url(self):
+#             return reverse()
+#
+#         def form_valid(self, form):
+#             # super().form_valid(self, form)
+#             if model.objects.filter(**form.cleaned_data).exists():
+#                 return redirect(f'{appname}:create')
+#
+#             else:
+#                 model(**form.cleaned_data).save()
+#                 return redirect(f'{appname}:list')
+#
+#         def form_invalid(self, form):
+#             return redirect(f'{appname}:create')
 
 
 def contact_us(request):
