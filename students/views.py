@@ -1,49 +1,57 @@
-from django.contrib.messages.views import SuccessMessageMixin
 from django.core.management import call_command
-from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, View
 
-from django_efremov.views import PersonListView
+from django_efremov.views import PersonListView, PersonCreateView
 
 from .forms import StudentForm
 from .models import Student
 
 
 # Viewers
-class StudentListView(PersonListView, View):
+class StudentListView(PersonListView):
     model = Student
     template_name = 'student_list.html'
 
-    # paginate_by = 10  # OR WHATEVER NUMBER YOU DESIRE PER PAGE
-    # pagination_class = Paginator  # OR NumberDetailPagination
-
     def get(self, request, student_id=None, **kwargs):
-        if student_id:
-            students = Student.objects.filter(id=student_id).all()
-        else:
-            students = Student.objects.all()
-
-        students = students.order_by('id').values()
-        paginator = Paginator(students, 18)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(
+        return super(
+            StudentListView,
+            self).get(
             request,
-            self.template_name,
-            {
-                'page_obj': page_obj,
-                # 'students': students,
-                'header': 'student',
-                'fields': Student._meta.fields
-            })
+            model=self.model,
+            template_name=self.template_name,
+            header='student',
+            person_id=student_id,
+            **kwargs)
+
+    # def get(self, request, student_id=None, **kwargs):
+    #     if student_id:
+    #         students = Student.objects.filter(id=student_id).all()
+    #     else:
+    #         students = Student.objects.all()
+    #
+    #     students = students.order_by('id').values()
+    #     paginator = Paginator(students, 18)
+    #     page_number = request.GET.get('page')
+    #     page_obj = paginator.get_page(page_number)
+    #     return render(
+    #         request,
+    #         self.template_name,
+    #         {
+    #             'page_obj': page_obj,
+    #             # 'students': students,
+    #             'header': 'student',
+    #             'fields': Student._meta.fields
+    #         })
 
 
-class StudentCreateView(CreateView, SuccessMessageMixin):
+class StudentCreateView(CreateView):
     template_name = 'student_create_form.html'
     form_class = StudentForm
 
+    # def create_method(self, appname='students'):
+    #     return super(StudentCreateView, self).create_method(self, self.model, self.form, appname=appname)
     def form_valid(self, form):
         if Student.objects.filter(**form.cleaned_data).exists():
             return redirect('students:create')

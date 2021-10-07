@@ -1,6 +1,5 @@
 from random import randint, choice
 from string import ascii_uppercase
-import json
 
 from django.core.management import call_command
 from django.urls import reverse
@@ -55,24 +54,46 @@ def invalid_phone_number(request):
 
 
 @pytest.mark.django_db
-def test_student_list(client):
+def test_student_list_empty_base(client):
     url = reverse('students:list')
-    client.get(url)
+    response = client.get(url)
+    assert response.status_code == 200
     assert Student.objects.count() == 0
 
 
 @pytest.mark.django_db
-def test_get_student(client):
+@pytest.mark.parametrize('n', [1, 10, 100])
+def test_student_list_full_base(client, n, group_prep):
+    call_command('generate_students', total=n)
+    url = reverse('students:list')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert Student.objects.count() == n
+
+
+@pytest.mark.django_db
+def test_get_student_empty_base(client):
     id_ = 1
     url = reverse('students:get', kwargs={'student_id': id_})
-    client.get(url)
+    response = client.get(url)
+    assert response.status_code == 200
     assert Student.objects.count() == 0
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize('n', [1, 10, 100])
+def test_get_student_full_base(client, n, group_prep):
+    call_command('generate_students', total=n)
+    url = reverse('students:get', kwargs={'student_id': n})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert Student.objects.count() == n
 
 
 @pytest.mark.django_db
 def test_generate_student(client, group_prep):
     url = reverse('students:generate')
-    response = client.get(url)
+    client.get(url)
     assert Student.objects.count() == 1
 
 
@@ -80,7 +101,7 @@ def test_generate_student(client, group_prep):
 def test_generate_students(client, group_prep):
     n = 100
     url = reverse('students:multi-generate', kwargs={'qty': n})
-    response = client.get(url)
+    client.get(url)
     assert Student.objects.count() == n
 
 
@@ -89,14 +110,14 @@ def test_create_student_empty_base_case(client, group_prep):
     url = reverse('students:create')
     group = Group.objects.get(pk=1)
     data = {
-            'id': 1,
-            'first_name': 'Name',
-            'last_name': 'Surname',
-            'age': 18,
-            'phone': '+12345678910111',
-            'group_id': group.id
+        'id': 1,
+        'first_name': 'Name',
+        'last_name': 'Surname',
+        'age': 18,
+        'phone': '+12345678910111',
+        'group_id': group.id
     }
-    response = client.post(url, data)
+    client.post(url, data)
     assert Student.objects.count() == 1
 
 
@@ -114,14 +135,14 @@ def test_student_creation_fails_on_invalid_phone(client, group_prep, invalid_pho
     url = reverse('students:create')
     group = Group.objects.get(pk=1)
     data = {
-            'id': 1,
-            'first_name': 'Name',
-            'last_name': 'Surname',
-            'age': 18,
-            'phone': invalid_phone_number,
-            'group_id': group.id
+        'id': 1,
+        'first_name': 'Name',
+        'last_name': 'Surname',
+        'age': 18,
+        'phone': invalid_phone_number,
+        'group_id': group.id
     }
-    response = client.post(url, data)
+    client.post(url, data)
     assert Student.objects.count() == 0
 
 
@@ -131,12 +152,12 @@ def test_edit_student(client, group_prep):
     url = reverse('students:edit', kwargs={'student_id': 1})
     group = Group.objects.get(pk=1)
     data = {
-            'id': 1,
-            'first_name': 'Name',
-            'last_name': 'Surname',
-            'age': 18,
-            'phone': '+12345678910111',
-            'group_id': group.id
+        'id': 1,
+        'first_name': 'Name',
+        'last_name': 'Surname',
+        'age': 18,
+        'phone': '+12345678910111',
+        'group_id': group.id
     }
     client.post(url, data)
     assert Student.objects.count() == 1
@@ -149,12 +170,12 @@ def test_student_edition_fails_on_invalid_phone(client, group_prep, invalid_phon
     url = reverse('students:edit', kwargs={'student_id': 1})
     group = Group.objects.get(pk=1)
     data = {
-            'id': 1,
-            'first_name': 'Name',
-            'last_name': 'Surname',
-            'age': 18,
-            'phone': invalid_phone_number,
-            'group_id': group.id
+        'id': 1,
+        'first_name': 'Name',
+        'last_name': 'Surname',
+        'age': 18,
+        'phone': invalid_phone_number,
+        'group_id': group.id
     }
     before_update = model_to_dict(Student.objects.get(pk=1))
     client.post(url, data)
@@ -164,53 +185,16 @@ def test_student_edition_fails_on_invalid_phone(client, group_prep, invalid_phon
 
 
 @pytest.mark.django_db
+def test_student_deletion(client, group_prep):
+    call_command('generate_students', total=1)
+    url = reverse('students:delete', kwargs={'pk': 1})
+    response = client.get(url)
+    assert response.status_code == 302
+    assert Student.objects.count() == 0
+
+
+@pytest.mark.django_db
 def test_logging_admin_middleware(client):
     response = client.get('/admin/')
     assert response.status_code < 400
     assert Logger.objects.count() > 0
-
-
-
-
-
-
-
-# @pytest.fixture()
-# def fixture_1(request):
-#     print("fixture1 setup")
-#
-#     def resource_teardown():
-#         print("fixture1 teardwon")
-#
-#     request.addfinalizer(resource_teardown)
-#
-# @pytest.fixture()
-# def fixture_2(request, fixture_1):
-#     print("fixture2 setup")
-#
-#     def resource_teardown():
-#         print("fixture2 teardwon")
-#
-#     request.addfinalizer(resource_teardown)
-#
-#
-#
-# def test_1_that_needs_resource(fixture_1):
-#     print("test_1_that_needs_resource")
-#
-#
-# def test_2_that_does_not(fixture_1, fixture_2):
-#     print("test_2_that_does_not")
-#
-#
-# def test_3_that_does_again(fixture_2):
-#     print("test_3_that_does_again")
-
-
-
-
-# @pytest.mark.django_db
-# def test_view(client):
-#    url = reverse('homepage-url')
-#    response = client.get(url)
-#    assert response.status_code == 200
