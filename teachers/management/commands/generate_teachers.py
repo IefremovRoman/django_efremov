@@ -1,4 +1,5 @@
 import json
+import os
 from random import choice, randint
 from string import ascii_uppercase
 
@@ -13,8 +14,12 @@ from teachers.models import Teacher
 
 locale = 'uk_UA'
 faker = Faker(locale)
-json_file = 'teachers/management/commands/university_subjects.json'
 
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+json_file = os.path.join(__location__, 'university_subjects.json')
+# json_file = 'teachers/management/commands/university_subjects.json'
+# json_file = os.path.join(BASE_DIR, ".env")
 
 class Command(BaseCommand):
     def __init__(self):

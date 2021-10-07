@@ -1,8 +1,7 @@
-from django.contrib.messages.views import SuccessMessageMixin
 from django.core.management import call_command
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, View
 
 from django_efremov.views import PersonListView
@@ -16,30 +15,39 @@ class TeacherListView(PersonListView, View):
     model = Teacher
     template_name = 'teacher_list.html'
 
-    # paginate_by = 18  # OR WHATEVER NUMBER YOU DESIRE PER PAGE
-    # pagination_class = Paginator  # OR NumberDetailPagination
-
     def get(self, request, teacher_id=None, **kwargs):
-        if teacher_id:
-            teachers = Teacher.objects.filter(id=teacher_id).all()
-        else:
-            teachers = Teacher.objects.all()
-        teachers = teachers.order_by('id').values()
-        paginator = Paginator(teachers, 18)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(
+        return super(
+            TeacherListView,
+            self).get(
             request,
-            self.template_name,
-            {
-                'page_obj': page_obj,
-                # 'teachers': teachers,
-                'header': 'teacher',
-                'fields': Teacher._meta.fields
-            })
+            model=self.model,
+            template_name=self.template_name,
+            header='teacher',
+            person_id=teacher_id,
+            **kwargs)
+
+    # def get(self, request, teacher_id=None, **kwargs):
+    #     if teacher_id:
+    #         teachers = Teacher.objects.filter(id=teacher_id).all()
+    #     else:
+    #         teachers = Teacher.objects.all()
+    #
+    #     teachers = teachers.order_by('id').values()
+    #     paginator = Paginator(teachers, 18)
+    #     page_number = request.GET.get('page')
+    #     page_obj = paginator.get_page(page_number)
+    #     return render(
+    #         request,
+    #         self.template_name,
+    #         {
+    #             'page_obj': page_obj,
+    #             # 'teachers': teachers,
+    #             'header': 'teacher',
+    #             'fields': Teacher._meta.fields
+    #         })
 
 
-class TeacherCreateView(CreateView, SuccessMessageMixin):
+class TeacherCreateView(CreateView):
     template_name = 'teacher_create_form.html'
     form_class = TeacherForm
 
@@ -71,7 +79,7 @@ class TeacherUpdateView(UpdateView):
         return redirect('teachers:list')
 
     def form_invalid(self, form):
-        return redirect('teachers:edit')
+        return redirect(reverse('teachers:edit', kwargs={'teacher_id': self.get_object().id}))
 
 
 class TeacherDeleteView(DeleteView):
