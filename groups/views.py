@@ -1,13 +1,15 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView, View
 
-from .models import Group
-from teachers.models import Teacher
 from students.models import Student
+
+from teachers.models import Teacher
+
 from .forms import GroupForm
+from .models import Group
 
 
 # Viewers
@@ -31,10 +33,10 @@ class GroupGetView(View):
         group = Group.objects.filter(id=group_id).values()[0]
         teacher_id = group.get('teacher_id_id')
         teacher = Teacher.objects.filter(id=teacher_id).values()[0]
-        students = [s for s in Student.objects.filter(group_id=group.get('id')).values()]
+        students = [s for s in Student.objects.filter(group_id=group.get('id')).order_by('id').values()]
 
         student_fields = Student._meta.fields
-        paginator = Paginator(students, 14)
+        paginator = Paginator(students, 13)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 

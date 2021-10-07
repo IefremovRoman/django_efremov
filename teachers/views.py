@@ -1,14 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import Paginator
 from django.core.management import call_command
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, View
 
-from .models import Teacher
-from .forms import TeacherForm
-
 from django_efremov.views import PersonListView
+
+from .forms import TeacherForm
+from .models import Teacher
 
 
 # Viewers
@@ -24,7 +24,7 @@ class TeacherListView(PersonListView, View):
             teachers = Teacher.objects.filter(id=teacher_id).all()
         else:
             teachers = Teacher.objects.all()
-        teachers = teachers.values()
+        teachers = teachers.order_by('id').values()
         paginator = Paginator(teachers, 18)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)

@@ -1,14 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import Paginator
 from django.core.management import call_command
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, View
 
-from .models import Student
-from .forms import StudentForm
-
 from django_efremov.views import PersonListView
+
+from .forms import StudentForm
+from .models import Student
 
 
 # Viewers
@@ -24,7 +24,8 @@ class StudentListView(PersonListView, View):
             students = Student.objects.filter(id=student_id).all()
         else:
             students = Student.objects.all()
-        students = students.values()
+
+        students = students.order_by('id').values()
         paginator = Paginator(students, 18)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -71,7 +72,7 @@ class StudentUpdateView(UpdateView):
         return redirect('students:list')
 
     def form_invalid(self, form):
-        return redirect('students:edit')
+        return redirect(reverse('students:edit', kwargs={'student_id': self.get_object().id}))
 
 
 class StudentDeleteView(DeleteView):
