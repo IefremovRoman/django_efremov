@@ -1,13 +1,10 @@
-from random import randint, choice
-from string import ascii_uppercase
-
 from django.core.management import call_command
-from django.urls import reverse
 from django.forms.models import model_to_dict
-
-import pytest
+from django.urls import reverse
 
 from faker import Faker
+
+import pytest
 
 from teachers.models import Teacher
 

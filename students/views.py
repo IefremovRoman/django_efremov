@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, View
 
-from django_efremov.views import PersonListView, PersonCreateView
+from django_efremov.views import PersonListView
 
 from .forms import StudentForm
 from .models import Student
@@ -51,7 +51,8 @@ class StudentCreateView(CreateView):
     form_class = StudentForm
 
     # def create_method(self, appname='students'):
-    #     return super(StudentCreateView, self).create_method(self, self.model, self.form, appname=appname)
+    # return super(StudentCreateView, self).create_method(self, self.model,
+    # self.form, appname=appname)
     def form_valid(self, form):
         if Student.objects.filter(**form.cleaned_data).exists():
             return redirect('students:create')

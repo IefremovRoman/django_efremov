@@ -1,6 +1,5 @@
 
 
-
 # @receiver(pre_save, sender=Student)
 # def phone_edit_handler(sender, **kwargs):
 #     if phone := kwargs['instance'].phone:

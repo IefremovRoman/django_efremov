@@ -21,6 +21,7 @@ json_file = os.path.join(__location__, 'university_subjects.json')
 # json_file = 'teachers/management/commands/university_subjects.json'
 # json_file = os.path.join(BASE_DIR, ".env")
 
+
 class Command(BaseCommand):
     def __init__(self):
         super(Command, self).__init__()

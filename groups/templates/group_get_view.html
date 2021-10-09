@@ -4,6 +4,7 @@
 <h1>Groups</h1>
     <div>
         {#Group table#}
+        {% if group %}
         <div>
         <h3>
             <span>Group</span>
@@ -28,18 +29,22 @@
                 </tr>
             </table>
         </div>
+        {% endif %}
         <div style="padding-bottom: 20px"></div>
         {#Teacher table#}
+        {% if teacher %}
         <table>
             <tr>
                 <td><h3>Curator name : {{ teacher.first_name }} {{ teacher.last_name }}</h3></td>
                 <td style="width: 15px"></td>
-                <td><h3>Id : {{ teacher.id }}</h3></td>
+                <td><a href="{% url 'teachers:get' teacher.id%}"><h3>Id : {{ teacher.id }}</h3></a></td>
                 <td style="width: 15px"></td>
                 <td><h3>Phone number : {{ teacher.phone }}</h3></td>
             </tr>
         </table>
+        {% endif %}
         {#Student table#}
+        {% if page_obj %}
         <div>
         <h3>Students</h3>
             <table class="table">
@@ -57,6 +62,7 @@
                 <tbody>
                     {% for obj in page_obj.object_list %}
                     <tr>
+{#                        <td>{{ obj }}</td>#}
                         {% for k,v in obj.items %}
                             {% if k != 'group_id_id' %}
                                 <td>{{ v }}</td>
@@ -92,6 +98,7 @@
             </span>
         </div>
         </div>
+    {% endif %}
     <div style="border-top: 1px solid darkslategrey;"></div>
     </div>
 {% endblock %}

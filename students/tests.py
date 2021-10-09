@@ -1,19 +1,19 @@
-from random import randint, choice
+from random import choice, randint
 from string import ascii_uppercase
 
 from django.core.management import call_command
-from django.urls import reverse
 from django.forms.models import model_to_dict
-
-import pytest
+from django.urls import reverse
 
 from faker import Faker
 
-from .models import Student, Logger
-
 from groups.models import Group
 
+import pytest
+
 from teachers.models import Teacher
+
+from .models import Logger, Student
 
 # Help functions
 faker = Faker()

@@ -1,7 +1,6 @@
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.views.generic import CreateView, ListView
 
 
