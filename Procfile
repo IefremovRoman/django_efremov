@@ -1,1 +1,1 @@
-web: waitress locallibrary.wsgi --log-file -
+web: waitress django_efremov.wsgi --log-file-
