@@ -207,6 +207,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+
 # Deploy settings
 
 # SESSION_COOKIE_SECURE = True
@@ -232,3 +233,5 @@ AUTHENTICATION_BACKENDS = (
 # SECURE_SSL_REDIRECT = False
 # SECURE_HSTS_SECONDS = 214000000
 # SECURE_HSTS_PRELOAD = False
+
+# CELERY_BROKER_URL = 'amqp://localhost'

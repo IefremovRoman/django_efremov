@@ -15,9 +15,16 @@ class TeacherListView(PersonListView, View):
     template_name = 'teacher_list.html'
 
     def get(self, request, teacher_id=None, **kwargs):
-        return super(
-            TeacherListView,
-            self).get(
+        if teacher_id:
+            teachers = Teacher.objects.filter(id=teacher_id).all()
+        else:
+
+            teachers = Teacher.objects.all()
+        teachers = teachers.values()
+        paginator = Paginator(teachers, 18)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(
             request,
             model=self.model,
             template_name=self.template_name,
