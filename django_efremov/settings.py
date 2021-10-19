@@ -63,8 +63,11 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 # DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
 ALLOWED_HOSTS = [
-    '*'
+    'sheltered-lake-87544.herokuapp.com'
 ]
+if DEBUG:
+    ALLOWED_HOSTS.append('127.0.0.1')
+
 # '127.0.0.1', 'localhost', 'herokuapp.com',
 # Application definition
 
@@ -188,7 +191,7 @@ USE_TZ = False
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'django_efremov', 'static')]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
