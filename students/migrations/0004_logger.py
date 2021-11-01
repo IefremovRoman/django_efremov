@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('method', models.CharField(max_length=12)),
                 ('path', models.CharField(max_length=50)),
-                ('execution_time', models.TimeField()),
+                ('execution_time', models.FloatField()),
                 ('created', models.DateTimeField(auto_now_add=True)),
             ],
         ),

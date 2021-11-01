@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('groups', '0002_auto_20210916_1313'),
-        ('students', '0005_alter_logger_execution_time'),
+        ('students', '0004_logger'),
     ]
 
     operations = [
