@@ -67,6 +67,7 @@ ALLOWED_HOSTS = [
 ]
 if DEBUG:
     ALLOWED_HOSTS.append('127.0.0.1')
+    ALLOWED_HOSTS.append('localhost')
 
 # '127.0.0.1', 'localhost', 'herokuapp.com',
 # Application definition
