@@ -144,10 +144,10 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'django_db',
-            'USER': 'user',
-            'PASSWORD': 'password',
-            'HOST': 'localhost',
+            'NAME': os.getenv('POSTGRES_DB', 'django_db'),
+            'USER': os.getenv('POSTGRES_USER', 'user'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
+            'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
             'PORT': '5432',
         }
     }
@@ -207,29 +207,3 @@ INTERNAL_IPS = [
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
-
-# Deploy settings
-
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-# SECURE_SSL_REDIRECT = False
-# SECURE_HSTS_SECONDS = 3600
-# SECURE_HSTS_PRELOAD = True
-
-# if os.environ.get('DJANGO_ENV') is not None:
-#     SECURE_SSL_REDIRECT = False
-#     SESSION_COOKIE_SECURE = False
-#     CSRF_COOKIE_SECURE = False
-# else:
-#     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-#     SECURE_SSL_REDIRECT = True
-#     SESSION_COOKIE_SECURE = True
-#     CSRF_COOKIE_SECURE = True
-
-
-# SESSION_COOKIE_DOMAIN = ".nb.local.com"
-# SESSION_COOKIE_SECURE = False
-# CSRF_COOKIE_SECURE = False
-# SECURE_SSL_REDIRECT = False
-# SECURE_HSTS_SECONDS = 214000000
-# SECURE_HSTS_PRELOAD = False
